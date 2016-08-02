@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="col-sm-2 sidenav" align=left >
+  <h4> Quick Post Links </h4>
+  {% for post in tot_object_list %}
+  <li><a href="{{ post.get_absolute_url }}"> {{ post.title }} </a></li>
+  {% endfor %}
+
+</div>
+
+<div class="container-fluid text-center">
+  <div class="row content" >
+
+    <div class="col-sm-8 text-left">
+      <br> </br>
+      <div class='col-sm-8' >
+        <form method='GET' action='' class='row'>
+            <div class='input-group'>
+                <input class='form-control' type='text' name='q' placeholder='Search posts' value='{{ request.GET.q }}'/>
+                <span class='input-group-btn'>
+                    <!-- <input class='btn btn-default' type='submit' value='Search' /> -->
+                    <button class='btn btn-default' type='submit'>Search <i class="fa fa-search"></i></button>
+                </span>
+            </div>
+        </form>
+     </div>
+
+
+      {% for post in object_list %}
+        <table class="table table-condensed">
+          <tbody>
+            <tr>
+              {% if post.image %}
+              <td width=100><a href="{{ post.get_absolute_url }}"> <img src='{{ post.image.url }}' class='img-rounded' width=100/> </a> </td>
+              {% endif %}
+              <td><strong><a href="{{ post.get_absolute_url }}"> {{ post.title }} </a></strong>
+                {% if post.draft %} <h3>Staff only: Draft</h3>{% endif %}
+                {% if post.publish > today %}<h3>Staff Only: Future Post</h3>{% endif %}</h3>
+                {% if post.user.get_full_name %}
+                <small>- by <strong>{{ post.user.get_full_name }}</strong> {% endif %} on <b>{{ post.publish }}</b>
+
+                {{ post.get_markdown|truncatechars_html:325 }}
+                {% for tag in post.get_tag_list %}
+                  Tags: <a href="/tag/{{ tag }}/">{{ tag }}</a>{% if not forloop.last %}, {% endif %} </small>
+                {% endfor %}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      {% endfor %}
+      <hr>
+      <div class="pagination">
+          <span class="step-links">
+              {% if object_list.has_previous %}
+                  <a href="?{{ page_request_var }}={{ object_list.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">previous</a>
+              {% endif %}
+              <span class="current">
+                  Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.
+              </span>
+              {% if object_list.has_next %}
+                  <a href="?{{ page_request_var }}={{ object_list.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">next</a>
+              {% endif %}
+          </span>
+       </div>
+
+
+    </div>
+
+    <div class="col-sm-2 sidenav" align=left >
+      <h4> Posts Archive </h4>
+      {% for line in aggr_data.archive_counts %}
+        {% if line.isyear %}
+          {% if not forloop.first %}
+            <br>
+          {% endif %}
+          <li><a href="/archive/{{ line.year }}/">{{ line.year }}</a> ({{ line.count }})<br></li>
+        {% else %}
+          <li><a href="/archive/{{ line.yearmonth }}/">{{ line.monthname }}</a> ({{ line.count }})<br></li>
+        {% endif %}
+      {% endfor %}
+
+      <h4>Tags</h4>
+      {% for line in aggr_data.tag_counts %}
+          <li><a href="/tag/{{ line.tag }}/">{{ line.tag }}</a> ({{ line.count }})<br></li>
+      {% endfor %}
+
+    </div>
+
+   </div>
+ </div>
+
+
+
+{% endblock content %}
