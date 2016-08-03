@@ -12,6 +12,7 @@ from django.contrib import messages
 from django.contrib.contenttypes.models import ContentType
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render_to_response
+from django.template import RequestContext
 
 import re
 from datetime import datetime
@@ -53,8 +54,8 @@ def post_create(request):
 	}
 	return render(request, "post_form.html", context)
 
-def post_detail(request,slug=None):
-    instance = get_object_or_404(Post, slug=slug)
+def post_detail(request,slug,year,month):
+    instance = get_object_or_404(Post,publish__year=int(year), publish__month=int(month),slug=slug)
     if instance.publish > timezone.now().date() or instance.draft:
 		if not request.user.is_staff or not request.user.is_superuser:
 			raise Http404
@@ -146,10 +147,10 @@ def custom_paging(queryset_list,page):
     return queryset
 
 
-def post_update(request, slug=None):
+def post_update(request,year=None,month=None,slug=None):
 	if not request.user.is_staff or not request.user.is_superuser:
 		raise Http404
-	instance = get_object_or_404(Post, slug=slug)
+	instance = get_object_or_404(Post,publish__year=int(year), publish__month=int(month),slug=slug)
 	form = PostForm(request.POST or None, request.FILES or None, instance=instance)
 	if form.is_valid():
 		instance = form.save(commit=False)
@@ -166,10 +167,10 @@ def post_update(request, slug=None):
 
 
 
-def post_delete(request, slug=None):
+def post_delete(request,year=None,month=None, slug=None):
 	if not request.user.is_staff or not request.user.is_superuser:
 		raise Http404
-	instance = get_object_or_404(Post, slug=slug)
+	instance = get_object_or_404(Post,publish__year=int(year), publish__month=int(month),slug=slug)
         instance.delete()
         messages.success(request, "Successfully deleted")
         return redirect("posts:list")

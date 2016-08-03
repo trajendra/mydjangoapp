@@ -4,7 +4,7 @@
 <div class="col-sm-2 sidenav" align=left >
   <h4> Quick Post Links </h4>
   {% for post in tot_object_list %}
-  <li><a href="{{ post.get_absolute_url }}"> {{ post.title }} </a></li>
+  <li><a href="{{post.get_absolute_url}}"> {{ post.title }} </a><br></li>
   {% endfor %}
 
 </div>
@@ -32,9 +32,9 @@
           <tbody>
             <tr>
               {% if post.image %}
-              <td width=100><a href="{{ post.get_absolute_url }}"> <img src='{{ post.image.url }}' class='img-rounded' width=100/> </a> </td>
+              <td width=100><a href="{{post.get_absolute_url}}"> <img src='{{ post.image.url }}' class='img-rounded' width=100/> </a> </td>
               {% endif %}
-              <td><strong><a href="{{ post.get_absolute_url }}"> {{ post.title }} </a></strong>
+              <td><strong><a href="{{post.get_absolute_url}}"> {{ post.title }} </a></strong>
                 {% if post.draft %} <h3>Staff only: Draft</h3>{% endif %}
                 {% if post.publish > today %}<h3>Staff Only: Future Post</h3>{% endif %}</h3>
                 {% if post.user.get_full_name %}
@@ -42,7 +42,7 @@
 
                 {{ post.get_markdown|truncatechars_html:325 }}
                 {% for tag in post.get_tag_list %}
-                  Tags: <a href="/tag/{{ tag }}/">{{ tag }}</a>{% if not forloop.last %}, {% endif %} </small>
+                  Tags: <a href="/blog/tag/{{ tag }}/">{{ tag }}</a>{% if not forloop.last %}, {% endif %} </small>
                 {% endfor %}
               </td>
             </tr>
@@ -63,8 +63,6 @@
               {% endif %}
           </span>
        </div>
-
-
     </div>
 
     <div class="col-sm-2 sidenav" align=left >
@@ -74,15 +72,15 @@
           {% if not forloop.first %}
             <br>
           {% endif %}
-          <li><a href="/archive/{{ line.year }}/">{{ line.year }}</a> ({{ line.count }})<br></li>
+          <li><a href="/blog/{{ line.year }}/">{{ line.year }}</a> ({{ line.count }})<br></li>
         {% else %}
-          <li><a href="/archive/{{ line.yearmonth }}/">{{ line.monthname }}</a> ({{ line.count }})<br></li>
+          <li><a href="/blog/{{ line.yearmonth }}/">{{ line.monthname }}</a> ({{ line.count }})<br></li>
         {% endif %}
       {% endfor %}
 
       <h4>Tags</h4>
       {% for line in aggr_data.tag_counts %}
-          <li><a href="/tag/{{ line.tag }}/">{{ line.tag }}</a> ({{ line.count }})<br></li>
+          <li><a href="/blog/tag/{{ line.tag }}/">{{ line.tag }}</a> ({{ line.count }})<br></li>
       {% endfor %}
 
     </div>

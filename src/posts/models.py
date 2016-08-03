@@ -74,8 +74,10 @@ class Post(models.Model):
     def __str__(self):
         return self.title
 
+    @models.permalink
     def get_absolute_url(self):
-        return reverse("posts:detail", kwargs={"slug": self.slug})
+        #return reverse("posts:detail", kwargs={"year": self.publish.year, "month": self.publish.month, "slug": self.slug})
+        return ('posts:detail', None, {'year': self.publish.year,'month': self.publish.strftime("%m"),'slug': self.slug})
 
     class Admin:
         pass

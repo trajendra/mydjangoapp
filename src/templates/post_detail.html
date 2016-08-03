@@ -11,9 +11,8 @@
 <div class="col-sm-2 sidenav" align=left >
   <h4> Quick Post Links </h4>
   {% for post in tot_object_list %}
-  <li><a href="{{ post.get_absolute_url }}"> {{ post.title }} </a></li>
+  <li><a href="{{post.get_absolute_url}}"> {{ post.title }} </a></li>
   {% endfor %}
-
 
 </div>
 
@@ -22,14 +21,14 @@
   <div class='col-sm-8' >
     <div class='col-sm-6 text-left'>
     <h5>
-      <a href='{{ instance.get_absolute_url }}'>{{ instance.title }}</a>
+      <a href='{{instance.get_absolute_url}}'>{{ instance.get_absolute_url }}</a>
     </h5>
   </div>
   <div class='col-sm-6 text-right'>
     {% if request.user.is_authenticated %}<h5>
-     <a href='/post/create'><span class="glyphicon glyphicon-pencil"></span> Create Post</a>
-     <a href='{{ instance.get_absolute_url }}edit'><span class="glyphicon glyphicon-edit"></span> Update Post</a>
-     <a href='{{ instance.get_absolute_url }}delete'><span class="glyphicon glyphicon-remove"></span> Delete Post</a>
+     <a href='/blog/create'><span class="glyphicon glyphicon-pencil"></span> Create Post</a>
+     <a href='{{instance.get_absolute_url}}edit'><span class="glyphicon glyphicon-edit"></span> Update Post</a>
+     <a href='{{instance.get_absolute_url}}delete'><span class="glyphicon glyphicon-remove"></span> Delete Post</a>
     {% endif %} </h5>
   </div>
     {% if instance.image %}
@@ -77,7 +76,6 @@ Linkedin
     <br/>
 
     <div>
-
         <p class='lead'>Comments</p>
         {% if request.user.is_authenticated %}
         <form method="POST" action="."> {% csrf_token %}
@@ -121,13 +119,6 @@ Linkedin
         <hr/>
         {% endfor %}
     </div>
-
-
-
-
-
-
-
 </div>
 </div>
 </div>
@@ -139,15 +130,15 @@ Linkedin
       {% if not forloop.first %}
         <br>
       {% endif %}
-      <li><a href="/archive/{{ line.year }}/">{{ line.year }}</a> ({{ line.count }})<br></li>
+      <li><a href="/blog/{{ line.year }}/">{{ line.year }}</a> ({{ line.count }})<br></li>
     {% else %}
-      <li><a href="/archive/{{ line.yearmonth }}/">{{ line.monthname }}</a> ({{ line.count }})<br></li>
+      <li><a href="/blog/{{ line.yearmonth }}/">{{ line.monthname }}</a> ({{ line.count }})<br></li>
     {% endif %}
   {% endfor %}
 
   <h4>Tags</h4>
   {% for line in aggr_data.tag_counts %}
-      <li><a href="/tag/{{ line.tag }}/">{{ line.tag }}</a> ({{ line.count }})<br></li>
+      <li><a href="/blog/tag/{{ line.tag }}/">{{ line.tag }}</a> ({{ line.count }})<br></li>
   {% endfor %}
 
 </div>
