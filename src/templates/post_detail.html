@@ -19,17 +19,17 @@
 <div class="container-fluid text-left">
 <div class="row content" >
   <div class='col-sm-8' >
-    <div class='col-sm-6 text-left'>
-    <h5>
-      <a href='{{instance.get_absolute_url}}'>{{ instance.get_absolute_url }}</a>
-    </h5>
-  </div>
+
   <div class='col-sm-6 text-right'>
-    {% if request.user.is_authenticated %}<h5>
+    {% if request.user.is_authenticated %}
+    {% if request.user.is_staff %}
+    <h5>
      <a href='/blog/create'><span class="glyphicon glyphicon-pencil"></span> Create Post</a>
      <a href='{{instance.get_absolute_url}}edit'><span class="glyphicon glyphicon-edit"></span> Update Post</a>
      <a href='{{instance.get_absolute_url}}delete'><span class="glyphicon glyphicon-remove"></span> Delete Post</a>
-    {% endif %} </h5>
+    {% endif %}
+    {% endif %}
+  </h5>
   </div>
     {% if instance.image %}
     <img src='{{ instance.image.url }}' class='img-responsive' />

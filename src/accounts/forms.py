@@ -16,7 +16,7 @@ class UserLoginForm(forms.Form):
     def clean(self, *args, **kwargs):
         username = self.cleaned_data.get("username")
         password = self.cleaned_data.get("password")
-       
+
         # user_qs = User.objects.filter(username=username)
         # if user_qs.count() == 1:
         #     user = user_qs.first()
@@ -66,16 +66,8 @@ class UserRegisterForm(forms.ModelForm):
             raise forms.ValidationError("This email has already been registered")
         return email
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+class ContactForm(forms.Form):
+    subject = forms.CharField(max_length=100)
+    message = forms.CharField(widget=forms.Textarea)
+    sender = forms.EmailField()
+    cc_myself = forms.BooleanField(required=False)

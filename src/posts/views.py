@@ -21,6 +21,7 @@ from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
+from django.core.mail import send_mail
 
 from comments.forms import CommentForm
 from comments.models import Comment
@@ -30,12 +31,8 @@ from .models import Post
 def about(request):
     return render(request,'about.html')
 
-def contact(request):
-    return render(request,'contact.html')
-
 def category(request):
     return render(request,'Home.html')
-
 
 def post_create(request):
 	if not request.user.is_staff or not request.user.is_superuser:

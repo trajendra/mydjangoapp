@@ -20,5 +20,5 @@ urlpatterns = [
     url(r'^blog/(?P<year>\d{4})/(?P<month>\d{2})/(?P<slug>[-\w]+)/delete/$', post_delete, name='delete'),
     url(r'^blog/tag/([\w\-]+)/$', tagview),
 	url(r'^about/', about, name='about'),
-	url(r'^contact/', contact, name='contact'),
+	
 ]

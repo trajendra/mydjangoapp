@@ -8,6 +8,7 @@ from django.db.models.signals import pre_save
 from django.utils import timezone
 from django.utils.safestring import mark_safe
 from django.utils.text import slugify
+from ckeditor_uploader.fields import RichTextUploadingField
 
 import re
 from markdown_deux import markdown
@@ -52,16 +53,14 @@ class Post(models.Model):
             height_field="height_field")
     height_field = models.IntegerField(default=0)
     width_field = models.IntegerField(default=0)
-    content = models.TextField()
+    #content = models.TextField()
+    content = RichTextUploadingField()
     draft = models.BooleanField(default=False)
     publish = models.DateField(auto_now=False, auto_now_add=False)
     read_time =  models.IntegerField(default=0) # models.TimeField(null=True, blank=True) #assume minutes
     updated = models.DateTimeField(auto_now=True, auto_now_add=False)
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
-    #date_created = models.DateTimeField()
-    #date_modified = models.DateTimeField(auto_now=True)
     tags = models.CharField(max_length=200)
-    #body = models.TextField()
 
     objects = PostManager()
 

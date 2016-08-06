@@ -6,8 +6,11 @@ from django.contrib.auth import (
 
     )
 from django.shortcuts import render, redirect
+from django.core.mail import send_mail
+from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib import messages
 
-from .forms import UserLoginForm, UserRegisterForm
+from .forms import UserLoginForm, UserRegisterForm, ContactForm
 
 def login_view(request):
     print(request.user.is_authenticated())
@@ -51,3 +54,26 @@ def register_view(request):
 def logout_view(request):
     logout(request)
     return redirect("/")
+
+def contact_view(request):
+    title="Contact"
+    form = ContactForm(request.POST or None)
+    if form.is_valid():
+        subject = form.cleaned_data['subject']
+        message = form.cleaned_data['message']
+        sender = form.cleaned_data['sender']
+        cc_myself = form.cleaned_data['cc_myself']
+
+        recipients = ['mail2raajj@gmail.com']
+        if cc_myself:
+            recipients.append(sender)
+
+        send_mail(subject, message, sender, recipients)
+        messages.success(request, "Thank you for contacting us, we have received you email!!")
+        return redirect('/contact/')
+
+    context = {
+        "form": form,
+        "title": title
+    }
+    return render(request,"contact.html", context)

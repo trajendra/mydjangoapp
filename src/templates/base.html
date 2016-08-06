@@ -93,9 +93,11 @@
           {% block post_detail_link %}
           {% endblock %}
           <li><a href="/about">About Us</a></li>
-          <li><a href="/contact">Contact</a></li>
+          <li><a href={% url "contact" %}>Contact</a></li>
           {% if request.user.is_authenticated %}
+          {% if user.is_staff %}
           <li><a href='/blog/create/'><span class="glyphicon glyphicon-pencil"></span> Create Post</a></li>
+          {% endif %}
           {% endif %}
         </ul>
 
