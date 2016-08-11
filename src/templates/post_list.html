@@ -4,7 +4,7 @@
 <div class="col-sm-2 sidenav" align=left >
   <h4> Quick Post Links </h4>
   {% for post in tot_object_list %}
-  <li><a href="{{post.get_absolute_url}}"> {{ post.title }} </a><br></li>
+  <li><a href="{{post.get_absolute_url}}"> {{ post.title|truncatechars:30 }} </a><br></li>
   {% endfor %}
 
 </div>
@@ -28,11 +28,11 @@
 
 
       {% for post in object_list %}
-        <table class="table table-condensed">
+        <table class="table table-responsive">
           <tbody>
             <tr>
               {% if post.image %}
-              <td width=100><a href="{{post.get_absolute_url}}"> <img src='{{ post.image.url }}' class='img-rounded' width=100/> </a> </td>
+              <td width=80><a href="{{post.get_absolute_url}}"> <img src='{{ post.image.url }}' class='img-rounded' width=80/> </a> </td>
               {% endif %}
               <td><strong><a href="{{post.get_absolute_url}}"> {{ post.title }} </a></strong>
                 {% if post.draft %} <h3>Staff only: Draft</h3>{% endif %}
