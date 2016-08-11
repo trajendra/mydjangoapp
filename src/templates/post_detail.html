@@ -7,26 +7,31 @@
 {{ instance.title }} | {{ block.super }}
 {% endblock head_title %}
 
+
+
+
 {% block content %}
 
 <div class="col-sm-2 sidenav" align=left >
-  <h4> Quick Post Links </h4>
+  <div class="well"> <h4>Quick Post Links</h4>
   {% for post in tot_object_list %}
-  <li><a href="{{post.get_absolute_url}}"> {{ post.title }} </a></li>
+  <li><a href="{{post.get_absolute_url}}"> {{ post.title}} </a><br/><br/></li>
   {% endfor %}
-
+</div>
 </div>
 
 <div class="container-fluid text-left">
 <div class="row content" >
 <div class='col-sm-8' >
-  <div class='col-sm-12 text-right '>
+  <div class='col-sm-12 text-left '>
+    <span style="color:green; font-weight:bold; "> {% include "messages_display.html" %}</span>
     {% if request.user.is_authenticated %}
     {% if request.user.is_staff %}
-    <h5>
-     <a href='/blog/create'><span class="glyphicon glyphicon-pencil"></span> Create Post</a>
-     <a href='{{instance.get_absolute_url}}edit'><span class="glyphicon glyphicon-edit"></span> Update Post</a>
-     <a href='{{instance.get_absolute_url}}delete'><span class="glyphicon glyphicon-remove"></span> Delete Post</a></h5>
+    <div style="float:right; padding:5px 5px 5px 5px;">
+     <a href='/blog/create' class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-pencil"></span> Create Post</a>
+     <a href='{{instance.get_absolute_url}}edit' class="btn btn-info btn-sm" ><span class="glyphicon glyphicon-edit"></span> Update Post</a>
+     <a href='{{instance.get_absolute_url}}delete' class="btn btn-danger btn-sm" ><span class="glyphicon glyphicon-remove"></span> Delete Post</a>
+   </div>
     {% endif %}
     {% endif %}
 
@@ -125,7 +130,7 @@
 </div>
 </div>
 <div class="col-sm-2 sidenav" align=left >
-
+  <div class="well" >
   <h4> Posts Archive </h4>
   {% for line in aggr_data.archive_counts %}
     {% if line.isyear %}
@@ -142,7 +147,7 @@
   {% for line in aggr_data.tag_counts %}
       <li><a href="/blog/tag/{{ line.tag }}/">{{ line.tag }}</a> ({{ line.count }})<br></li>
   {% endfor %}
-
+</div>
 </div>
 </div>
 </div>

@@ -13,30 +13,32 @@
 
 <style>
  {% block style %}
- /* Remove the navbar's default margin-bottom and rounded borders */
+
+  /* Remove the navbar's default margin-bottom and rounded borders */
    .navbar {
      margin-bottom: 0;
      border-radius: 0;
-
    }
    strong{
      font-size:15px;
-
    }
    small{
      font-size:14px;
-
    }
 
    body {
       position: relative;
-      font-size:13px;
+      font-size:14px;
   }
 
   .sidenav {
-         padding-top: 20px;
-         height:100%;
-         
+         padding: 10px 10px;
+         height:150%;
+         font-size:14px;
+         z-index: 1000;
+         background: #ddd;
+         height: 100%;
+         overflow-y: auto;
    }
 
    /* Set black background color, white text and some padding */
@@ -46,11 +48,12 @@
      padding: 15px;
    }
 
+
    /* On small screens, set height to 'auto' for sidenav and grid */
    @media screen and (max-width: 767px) {
      .sidenav {
        height: auto;
-       padding: 15px;
+       padding: 10px 10px;
        font-size:small;
      }
      .row.content {height:auto;}
@@ -118,7 +121,7 @@
       </div>
     </div>
   </nav>
-  {% include "messages_display.html" %}
+  
   {% block content %} {% endblock content %}
 
   <footer class="container-fluid text-center">
