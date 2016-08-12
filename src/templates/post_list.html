@@ -3,8 +3,8 @@
 
 <div class="col-sm-2 sidenav" align=left >
   <div class="well"> <h4>Quick Post Links</h4>
-  {% for post in tot_object_list %}
-  <li><a href="{{post.get_absolute_url}}"> {{ post.title}} </a><br/><br/></li>
+  {% for post in tot_object_list|slice:"5:12" %}
+  <li><a href="{{post.get_absolute_url}}"> {{ post.title|truncatechars:100}} </a><br/><br/></li>
   {% endfor %}
 </div>
 </div>
@@ -29,7 +29,7 @@
       {% for post in object_list %}
             <tr style="border-bottom:1px solid #ddd;">
               <td>
-              <div style="float:left; padding:0px 5px 0px 0px; height:90; overflow:hidden">
+              <div style="float:left; padding:0px 5px 0px 0px; height:85; overflow:hidden">
               {% if post.image %}
               <div style="float:left; padding:0px 5px 0px 0px;"><a href="{{post.get_absolute_url}}"> <img src='{{ post.image.url }}' class='img-thumbnail' width=110/> </a> </div>
               {% endif %}

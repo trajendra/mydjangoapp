@@ -14,9 +14,10 @@
 
 <div class="col-sm-2 sidenav" align=left >
   <div class="well"> <h4>Quick Post Links</h4>
-  {% for post in tot_object_list %}
-  <li><a href="{{post.get_absolute_url}}"> {{ post.title}} </a><br/><br/></li>
+  {% for post in tot_object_list|slice:"0:10" %}
+  <li><a href="{{post.get_absolute_url}}"> {{ post.title|truncatechars:100}} </a><br/><br/></li>
   {% endfor %}
+
 </div>
 </div>
 
