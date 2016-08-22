@@ -84,6 +84,11 @@ def post_detail(request,slug,year,month):
             content = content_data,
             parent = parent_obj,
             )
+        subject = ' Comment recieved - " '+instance.title[0:50] +'.. ."'
+        message = ' Post Title : '+instance.title +'. \n Comment : '+str(content_data)+'. \n User : '+str(request.user)
+        sender = ''
+        recipients = ['mail2raajj@gmail.com']
+        send_mail(subject, message, sender, recipients)
         return HttpResponseRedirect(new_comment.content_object.get_absolute_url())
     posts,pagedata = init()
     queryset_list = Post.objects.active() #.order_by("-timestamp")

@@ -29,7 +29,7 @@
       {% for post in object_list %}
             <tr style="border-bottom:1px solid #ddd;">
               <td>
-              <div style="float:left; padding:0px 5px 0px 0px; height:85; overflow:hidden">
+              <div style="float:left; padding:0px 5px 0px 0px;">
               {% if post.image %}
               <div style="float:left; padding:0px 5px 0px 0px;"><a href="{{post.get_absolute_url}}"> <img src='{{ post.image.url }}' class='img-thumbnail' width=110/> </a> </div>
               {% endif %}
@@ -38,7 +38,9 @@
                 {% if post.publish > today %}<h3>Staff Only: Future Post</h3>{% endif %}</h3>
                 {% if post.user.get_full_name %}
                 <small>- by <span style="font-size:12px; font-weight:bold; ">{{ post.user.get_full_name }}</span> {% endif %} on <span style="font-size:12px; font-weight:bold">{{ post.publish }}</span>
-                {{ post.get_markdown|truncatechars_html:500 }}
+                  <div style="max-height: 8em; overflow: auto;">
+                  {{ post.get_markdown|truncatechars_html:350 }}
+                  </div>
               </div>
               <div>
                 <span style="align:left">

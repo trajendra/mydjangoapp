@@ -7,6 +7,7 @@ from django.shortcuts import render, get_object_or_404
 
 from .forms import CommentForm
 from .models import Comment
+from django.core.mail import send_mail
 
 
 @login_required #(login_url='/login/') #LOGIN_URL = '/login/'
@@ -38,6 +39,12 @@ def comment_delete(request, id):
 
 def comment_thread(request, id):
     #obj = Comment.objects.get(id=id)
+    subject = 'test comment'
+    message = 'test message'
+    sender = 'user@sender.com'
+    recipients = ['mail2raajj@gmail.com']
+    send_mail(subject, message, sender, recipients)
+    
     try:
         obj = Comment.objects.get(id=id)
     except:
@@ -78,8 +85,18 @@ def comment_thread(request, id):
                             content = content_data,
                             parent = parent_obj,
                         )
+        subject = 'test comment'
+        message = 'test message'
+        sender = 'user@sender.com'
+        recipients = ['mail2raajj@gmail.com']
+        send_mail(subject, message, sender, recipients)
         return HttpResponseRedirect(new_comment.content_object.get_absolute_url())
 
+    subject = 'test comment'
+    message = 'test message'
+    sender = 'user@sender.com'
+    recipients = ['mail2raajj@gmail.com']
+    send_mail(subject, message, sender, recipients)
 
     context = {
         "comment": obj,

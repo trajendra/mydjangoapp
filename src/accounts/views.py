@@ -69,7 +69,7 @@ def contact_view(request):
             recipients.append(sender)
 
         send_mail(subject, message, sender, recipients)
-        messages.success(request, "Thank you for contacting us, we have received you email!!")
+        messages.success(request, "Thank you for contacting us, we have received your email!!")
         return redirect('/contact/')
 
     context = {
