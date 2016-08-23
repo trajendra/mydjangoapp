@@ -1,10 +1,10 @@
 try:
-    from urllib import quote_plus #python 2
+    from urllib import quote_plus  # python 2
 except:
     pass
 
 try:
-    from urllib.parse import quote_plus #python 3
+    from urllib.parse import quote_plus  # python 3
 except:
     pass
 
@@ -28,39 +28,43 @@ from comments.models import Comment
 from .forms import PostForm
 from .models import Post
 
+
 def about(request):
-    return render(request,'about.html')
+    return render(request, 'about.html')
+
 
 def category(request):
-    return render(request,'Home.html')
+    return render(request, 'Home.html')
+
 
 def post_create(request):
-	if not request.user.is_staff or not request.user.is_superuser:
-		raise Http404
+    if not request.user.is_staff or not request.user.is_superuser:
+        raise Http404
 
-	form = PostForm(request.POST or None, request.FILES or None)
-	if form.is_valid():
-		instance = form.save(commit=False)
-		instance.user = request.user
-		instance.save()
-		# message success
-		messages.success(request, "Successfully Created")
-		return HttpResponseRedirect(instance.get_absolute_url())
-	context = {
-		"form": form,
-	}
-	return render(request, "post_form.html", context)
+    form = PostForm(request.POST or None, request.FILES or None)
+    if form.is_valid():
+        instance = form.save(commit=False)
+        instance.user = request.user
+        instance.save()
+        # message success
+        messages.success(request, "Successfully Created")
+        return HttpResponseRedirect(instance.get_absolute_url())
+    context = {
+        "form": form,
+    }
+    return render(request, "post_form.html", context)
 
-def post_detail(request,slug,year,month):
-    instance = get_object_or_404(Post,publish__year=int(year), publish__month=int(month),slug=slug)
+
+def post_detail(request, slug, year, month):
+    instance = get_object_or_404(Post, publish__year=int(year), publish__month=int(month), slug=slug)
     if instance.publish > timezone.now().date() or instance.draft:
-		if not request.user.is_staff or not request.user.is_superuser:
-			raise Http404
+        if not request.user.is_staff or not request.user.is_superuser:
+            raise Http404
     share_string = quote_plus(instance.content)
     initial_data = {
-			"content_type": instance.get_content_type,
-			"object_id": instance.id
-	}
+        "content_type": instance.get_content_type,
+        "object_id": instance.id
+    }
     form = CommentForm(request.POST or None, initial=initial_data)
     if form.is_valid() and request.user.is_authenticated():
         c_type = form.cleaned_data.get("content_type")
@@ -78,20 +82,21 @@ def post_detail(request,slug,year,month):
                 parent_obj = parent_qs.first()
 
         new_comment, created = Comment.objects.get_or_create(
-            user = request.user,
-            content_type= content_type,
-            object_id = obj_id,
-            content = content_data,
-            parent = parent_obj,
-            )
-        subject = ' Comment recieved - " '+instance.title[0:50] +'.. ."'
-        message = ' Post Title : '+instance.title +'. \n Comment : '+str(content_data)+'. \n User : '+str(request.user)
-        sender = ''
+            user=request.user,
+            content_type=content_type,
+            object_id=obj_id,
+            content=content_data,
+            parent=parent_obj,
+        )
+        subject = ' Comment recieved - " ' + instance.title[0:50] + '.. ."'
+        message = ' Post Title : ' + instance.title + '. \n Comment : ' + str(content_data) + '. \n User : ' + str(
+            request.user)
+        sender = 'XChange Idea <e@mail.xchangeidea.net>'
         recipients = ['mail2raajj@gmail.com']
         send_mail(subject, message, sender, recipients)
         return HttpResponseRedirect(new_comment.content_object.get_absolute_url())
-    posts,pagedata = init()
-    queryset_list = Post.objects.active() #.order_by("-timestamp")
+    posts, pagedata = init()
+    queryset_list = Post.objects.active()  # .order_by("-timestamp")
 
     if request.user.is_staff or request.user.is_superuser:
         queryset_list = Post.objects.all()
@@ -102,84 +107,87 @@ def post_detail(request,slug,year,month):
         "tot_object_list": queryset_list,
         "share_string": share_string,
         "comments": comments,
-        "comment_form":form,
-        "aggr_data":pagedata,
-        }
+        "comment_form": form,
+        "aggr_data": pagedata,
+    }
     return render(request, "post_detail.html", context)
 
+
 def post_list(request):
-    posts,pagedata=init()
+    posts, pagedata = init()
     today = timezone.now().date()
-    queryset_list = Post.objects.active() #.order_by("-timestamp")
+    queryset_list = Post.objects.active()  # .order_by("-timestamp")
     if request.user.is_staff or request.user.is_superuser:
         queryset_list = Post.objects.all()
     query = request.GET.get("q")
     if query:
         queryset_list = queryset_list.filter(
-            Q(title__icontains=query)|
-            Q(content__icontains=query)|
+            Q(title__icontains=query) |
+            Q(content__icontains=query) |
             Q(user__first_name__icontains=query) |
             Q(user__last_name__icontains=query)
-            ).distinct()
+        ).distinct()
     page_request_var = "page"
     page = request.GET.get(page_request_var)
-    queryset = custom_paging(queryset_list,page)
+    queryset = custom_paging(queryset_list, page)
     context = {
         "object_list": queryset,
         "tot_object_list": queryset_list,
         "title": "List",
         "page_request_var": page_request_var,
         "today": today,
-        "aggr_data":pagedata,
-        }
+        "aggr_data": pagedata,
+    }
 
     return render(request, "post_list.html", context)
 
-def custom_paging(queryset_list,page):
-    paginator = Paginator(queryset_list, 5) # Show 25 contacts per page
+
+def custom_paging(queryset_list, page):
+    paginator = Paginator(queryset_list, 15)  # Show 25 contacts per page
     page = page
     try:
         queryset = paginator.page(page)
     except PageNotAnInteger:
-		# If page is not an integer, deliver first page.
+        # If page is not an integer, deliver first page.
         queryset = paginator.page(1)
     except EmptyPage:
-		# If page is out of range (e.g. 9999), deliver last page of results.
+        # If page is out of range (e.g. 9999), deliver last page of results.
         queryset = paginator.page(paginator.num_pages)
     return queryset
 
 
-def post_update(request,year=None,month=None,slug=None):
-	if not request.user.is_staff or not request.user.is_superuser:
-		raise Http404
-	instance = get_object_or_404(Post,publish__year=int(year), publish__month=int(month),slug=slug)
-	form = PostForm(request.POST or None, request.FILES or None, instance=instance)
-	if form.is_valid():
-		instance = form.save(commit=False)
-		instance.save()
-		messages.success(request, "Post Saved Successfully", extra_tags='html_safe')
-		return HttpResponseRedirect(instance.get_absolute_url())
+def post_update(request, year=None, month=None, slug=None):
+    if not request.user.is_staff or not request.user.is_superuser:
+        raise Http404
+    instance = get_object_or_404(Post, publish__year=int(year), publish__month=int(month), slug=slug)
+    form = PostForm(request.POST or None, request.FILES or None, instance=instance)
+    if form.is_valid():
+        instance = form.save(commit=False)
+        instance.save()
+        messages.success(request, "Post Saved Successfully", extra_tags='html_safe')
+        return HttpResponseRedirect(instance.get_absolute_url())
 
-	context = {
-		"title": instance.title,
-		"instance": instance,
-		"form":form,
-	}
-	return render(request, "post_form.html", context)
+    context = {
+        "title": instance.title,
+        "instance": instance,
+        "form": form,
+    }
+    return render(request, "post_form.html", context)
 
 
+def post_delete(request, year=None, month=None, slug=None):
+    if not request.user.is_staff or not request.user.is_superuser:
+        raise Http404
+    instance = get_object_or_404(Post, publish__year=int(year), publish__month=int(month), slug=slug)
+    instance.delete()
+    messages.success(request, "Successfully deleted")
+    return redirect("posts:list")
 
-def post_delete(request,year=None,month=None, slug=None):
-	if not request.user.is_staff or not request.user.is_superuser:
-		raise Http404
-	instance = get_object_or_404(Post,publish__year=int(year), publish__month=int(month),slug=slug)
-        instance.delete()
-        messages.success(request, "Successfully deleted")
-        return redirect("posts:list")
 
 # new code #
 MONTH_NAMES = ('', 'January', 'Feburary', 'March', 'April', 'May', 'June', 'July',
                'August', 'September', 'October', 'November', 'December')
+
 
 def init():
     posts = Post.objects.active()
@@ -190,6 +198,7 @@ def init():
                 'tag_counts': tag_data,
                 'archive_counts': archive_data,}
     return posts, pagedata
+
 
 def create_archive_data(posts):
     archive_data = []
@@ -218,6 +227,7 @@ def create_archive_data(posts):
                                  'count': mcount[year][month],})
     return archive_data
 
+
 def create_tag_data(posts):
     tag_data = []
     count = {}
@@ -228,25 +238,28 @@ def create_tag_data(posts):
                 count[tag] = 1
             else:
                 count[tag] += 1
-    for tag, count in sorted(count.iteritems(), key=lambda(k, v): (v, k), reverse=True):
+    for tag, count in sorted(count.iteritems(), key=lambda (k, v): (v, k), reverse=True):
         tag_data.append({'tag': tag,
                          'count': count,})
     return tag_data
 
+
 def frontpage(request):
     posts, pagedata = init()
     pagedata.update({'subtitle': '',})
-    #return render_to_response('listpage.html', pagedata)
-    return render(request,'listpage.html', pagedata)
+    # return render_to_response('listpage.html', pagedata)
+    return render(request, 'listpage.html', pagedata)
+
 
 def singlepost(request, year, month, slug2):
     posts, pagedata = init()
     post = posts.get(timestamp__year=year,
-                            timestamp__month=int(month),
-                            slug=slug2,)
+                     timestamp__month=int(month),
+                     slug=slug2, )
     pagedata.update({'post': post})
-    #return render_to_response('singlepost.html', pagedata)
-    return render(request,'singlepost.html', pagedata)
+    # return render_to_response('singlepost.html', pagedata)
+    return render(request, 'singlepost.html', pagedata)
+
 
 def yearview(request, year):
     posts, pagedata = init()
@@ -257,17 +270,18 @@ def yearview(request, year):
     today = timezone.now().date()
     page_request_var = "page"
     page = request.GET.get(page_request_var)
-    queryset = custom_paging(tot_posts,page)
+    queryset = custom_paging(tot_posts, page)
     context = {
         "object_list": posts,
         "tot_object_list": tot_posts,
         "title": "List",
         "page_request_var": page_request_var,
         "today": today,
-        "aggr_data":pagedata,
-        }
+        "aggr_data": pagedata,
+    }
 
     return render(request, "post_list.html", context)
+
 
 def monthview(request, year, month):
     posts, pagedata = init()
@@ -281,11 +295,12 @@ def monthview(request, year, month):
         "object_list": posts,
         "tot_object_list": tot_posts,
         "title": "List",
-        #"page_request_var": page_request_var,
+        # "page_request_var": page_request_var,
         "today": today,
-        "aggr_data":pagedata,
-        }
+        "aggr_data": pagedata,
+    }
     return render(request, "post_list.html", context)
+
 
 def tagview(request, tag):
     allposts, pagedata = init()
@@ -301,8 +316,8 @@ def tagview(request, tag):
         "object_list": posts,
         "tot_object_list": allposts,
         "title": "List",
-        #"page_request_var": page_request_var,
+        # "page_request_var": page_request_var,
         "today": today,
-        "aggr_data":pagedata,
-        }
+        "aggr_data": pagedata,
+    }
     return render(request, "post_list.html", context)

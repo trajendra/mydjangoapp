@@ -1,23 +1,21 @@
 {% load staticfiles %}
-<!--DOCTYPE html -->
-<html>
-<head>
-<title>{% block head_title %} eXchange Idea Network {% endblock head_title %}</title>
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 
-<!-- Optional theme -->
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>{% block head_title %} XChange Idea Network {% endblock head_title %}</title>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
 <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css' >
 <link rel='stylesheet' href='{% static "css/base.css" %}' />
 
 <style>
  {% block style %}
-
-  /* Remove the navbar's default margin-bottom and rounded borders */
    .navbar {
-     margin-bottom: 0;
-     border-radius: 0;
+     margin-bottom: 0; border-radius: 0;
    }
    strong{
      font-size:15px;
@@ -35,10 +33,20 @@
          padding: 10px 10px;
          height:125%;
          font-size:13px;
-         background: #ddd;
-         color: green;
+         color: #434980;
 
    }
+
+   a:link, a:visited {
+    text-decoration: none;
+    display: inline-block;
+}
+
+
+    a:hover, a:active {
+
+    font-weight: bold;
+    }
 
    /* Set black background color, white text and some padding */
    footer {
@@ -46,7 +54,6 @@
      color: white;
      padding: 15px;
    }
-
 
    /* On small screens, set height to 'auto' for sidenav and grid */
    @media screen and (max-width: 767px) {
@@ -58,27 +65,28 @@
      .row.content {height:auto;}
    }
 
- img:hover {
-  -webkit-filter: grayscale(0%);
-  -webkit-transition: .5s ease-in-out;
-  -moz-filter: grayscale(0%);
-  -moz-transition: .5s ease-in-out;
-  -o-filter: grayscale(0%);
-  -o-transition: .5s ease-in-out;
-  filter: grayscale(0%);
- }
+     img:hover {
+      -webkit-filter: grayscale(0%);
+      -webkit-transition: .5s ease-in-out;
+      -moz-filter: grayscale(0%);
+      -moz-transition: .5s ease-in-out;
+      -o-filter: grayscale(0%);
+      -o-transition: .5s ease-in-out;
+      filter: grayscale(0%);
+     }
 
- img {
-  -webkit-filter: grayscale(100%);
-  -webkit-transition: .5s ease-in-out;
-  -moz-filter: grayscale(100%);
-  -moz-transition: .5s ease-in-out;
-  -o-filter: grayscale(100%);
-  -o-transition: .5s ease-in-out;
-  filter: grayscale(100%);
- }
+     img {
+      -webkit-filter: grayscale(100%);
+      -webkit-transition: .5s ease-in-out;
+      -moz-filter: grayscale(100%);
+      -moz-transition: .5s ease-in-out;
+      -o-filter: grayscale(100%);
+      -o-transition: .5s ease-in-out;
+      filter: grayscale(100%);
+     }
 {% endblock style %}
 </style>
+
 {% block head_extra %} {% endblock head_extra %}
 </head>
 
@@ -92,7 +100,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="/" > eXchange Idea Network </a>
+        <a class="navbar-brand" href="/" > xChangeIdea.Net </a>
       </div>
       <div class="collapse navbar-collapse" id="myNavbar" >
         <ul class="nav navbar-nav navbar-center" >
@@ -124,15 +132,12 @@
   {% block content %} {% endblock content %}
 
   <footer class="container-fluid text-center">
-  Copyright &copy; XChangeIdea.net 2016  - Design & developed by Rajendra T
+    All rights reserved &copy; XChangeIdea.Net 2016  - Design & developed by Rajendra T
   </footer>
 
 <!-- Latest compiled and minified JavaScript -->
 <script src="http://code.jquery.com/jquery-1.12.2.min.js"   integrity="sha256-lZFHibXzMHo3GGeehn1hudTAP3Sc0uKXBXAzHX1sjtk="   crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.5/marked.min.js'></script>
-
-
 <script type="text/javascript">
  $(document).ready(function(){
     $(".content-markdown").each(function(){
@@ -182,13 +187,22 @@
     }
     )
 
+     $(function () {
+
+    $('.toggle').click(function (event) {
+        event.preventDefault();
+        var target = $(this).attr('href');
+        $(target).toggleClass('hidden show');
+    });
+
+    });
+
 
     // preview-title
     // preview-content
 
-})
-
- </script>
+  })
+</script>
 
 </body>
 </html>

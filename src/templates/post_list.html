@@ -2,11 +2,16 @@
 {% block content %}
 
 <div class="col-sm-2 sidenav" align=left >
-  <div class="well"> <h4>Quick Post Links</h4>
-  {% for post in tot_object_list|slice:"5:12" %}
-  <li><a href="{{post.get_absolute_url}}"> {{ post.title|truncatechars:100}} </a><br/><br/></li>
-  {% endfor %}
-</div>
+ <h4> Popular Posts </h4>
+ {% for post in tot_object_list|slice:"5:12" %}
+  <div class="thumbnail" style="float:left; padding:5px 5px 5px 5px; background-color:#ab9bab; font-family: 'Verdana'; font-size: 13px; " >
+  {% if post.image %}
+      <div style="float:left; padding:0px 5px 0px 0px;"><a href="{{post.get_absolute_url}}">
+          <img src='{{ post.image.url }}' class='img-responsive'/> </a> </div>
+  {% endif %}
+  <a href="{{post.get_absolute_url}}"> <span style="color:white; ">{{ post.title }} </span></a>
+  </div>
+ {% endfor %}
 </div>
 
 <div class="container-fluid text-center">
@@ -23,7 +28,7 @@
             </div>
         </form>
      </div>
-
+    <br/><br/>
      <table class="table table-responsive" style="border:none;">
        <tbody>
       {% for post in object_list %}
@@ -69,25 +74,27 @@
        </div>
     </div>
 
+
     <div class="col-sm-2 sidenav" align=left >
-      <div class="well" >
       <h4> Posts Archive </h4>
+    <div class="thumbnail" style=" padding:5px 5px 5px 5px; background-color:#ab9bab; font-family: 'Verdana' " >
       {% for line in aggr_data.archive_counts %}
         {% if line.isyear %}
           {% if not forloop.first %}
-            <br>
           {% endif %}
-          <li><a href="/blog/{{ line.year }}/">{{ line.year }}</a> ({{ line.count }})<br></li>
+         <span style="color:white; "> <li><a href="/blog/{{ line.year }}/" style="color:white; ">{{ line.year }}</a> ({{ line.count }})<br></li>
         {% else %}
-          <li><a href="/blog/{{ line.yearmonth }}/">{{ line.monthname }}</a> ({{ line.count }})<br></li>
+          <li><a href="/blog/{{ line.yearmonth }}/" style="color:white; ">{{ line.monthname }}</a> ({{ line.count }})<br></li> </span>
         {% endif %}
-      {% endfor %}
+
+      {% endfor %}</div>
 
       <h4>Tags</h4>
-      {% for line in aggr_data.tag_counts %}
-          <li><a href="/blog/tag/{{ line.tag }}/">{{ line.tag }}</a> ({{ line.count }})<br></li>
+      <div class="thumbnail" style=" padding:5px 5px 5px 5px; background-color:#ab9bab; font-family: 'Verdana' " >
+      {% for line in aggr_data.tag_counts %}<span style="color:white; ">
+          <li><a href="/blog/tag/{{ line.tag }}/" style="color:white; ">{{ line.tag }}</a> ({{ line.count }})<br></li></span>
       {% endfor %}
-    </div>
+      </div>
     </div>
 
    </div>

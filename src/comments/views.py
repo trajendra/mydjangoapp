@@ -39,12 +39,6 @@ def comment_delete(request, id):
 
 def comment_thread(request, id):
     #obj = Comment.objects.get(id=id)
-    subject = 'test comment'
-    message = 'test message'
-    sender = 'user@sender.com'
-    recipients = ['mail2raajj@gmail.com']
-    send_mail(subject, message, sender, recipients)
-    
     try:
         obj = Comment.objects.get(id=id)
     except:
@@ -85,18 +79,12 @@ def comment_thread(request, id):
                             content = content_data,
                             parent = parent_obj,
                         )
-        subject = 'test comment'
-        message = 'test message'
-        sender = 'user@sender.com'
+        subject = ' Reply recieved on your comment.. '
+        message = ' Reply Message : \n '+ str(content_data) + '. \n User : ' + str(request.user)
+        sender = 'XChange Idea <e@mail.xchangeidea.net>'
         recipients = ['mail2raajj@gmail.com']
         send_mail(subject, message, sender, recipients)
         return HttpResponseRedirect(new_comment.content_object.get_absolute_url())
-
-    subject = 'test comment'
-    message = 'test message'
-    sender = 'user@sender.com'
-    recipients = ['mail2raajj@gmail.com']
-    send_mail(subject, message, sender, recipients)
 
     context = {
         "comment": obj,

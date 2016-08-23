@@ -13,12 +13,16 @@
 {% block content %}
 
 <div class="col-sm-2 sidenav" align=left >
-  <div class="well"> <h4>Quick Post Links</h4>
-  {% for post in tot_object_list|slice:"0:10" %}
-  <li><a href="{{post.get_absolute_url}}"> {{ post.title|truncatechars:100}} </a><br/><br/></li>
-  {% endfor %}
-
-</div>
+ <h4> Popular Posts </h4>
+ {% for post in tot_object_list|slice:"0:10" %}
+  <div class="thumbnail" style="float:left; padding:5px 5px 5px 5px; background-color:#ab9bab; font-family: 'Verdana'; font-size: 13px; " >
+  {% if post.image %}
+      <div style="float:left; padding:0px 5px 0px 0px;"><a href="{{post.get_absolute_url}}">
+          <img src='{{ post.image.url }}' class='img-responsive'/> </a> </div>
+  {% endif %}
+  <a href="{{post.get_absolute_url}}"> <span style="color:white; ">{{ post.title }} </span></a>
+  </div>
+ {% endfor %}
 </div>
 
 <div class="container-fluid text-left">
@@ -96,12 +100,25 @@
         <hr/>
         {% for comment in comments %}
 
-        <blockquote>
+         <blockquote>
           <p>{{ comment.content }}</p>
           <span><small>via {{ comment.user }} | {{ comment.timestamp|timesince }} ago | {% if comment.children.count > 0 %}{{ comment.children.count }} Comment{% if comment.children.count > 1 %}s{% endif %} | {% endif %}
-            <a class='comment-reply-btn' href='#'>Reply</a> | <a class='' href='{{ comment.get_absolute_url }}'>Thread</a> </small>
+            <a href="#cmnt" class="toggle btn-default">Reply</a> |
+              <a class='btn-default' href='{{ comment.get_absolute_url }}'>Thread</a> </small>
+            <div id="cmnt" class="well hidden">
+             {% if request.user.is_authenticated %}
+                <form method="POST" action="."> {% csrf_token %}
+                    {{ comment_form|crispy }}
+                    <input type='hidden' name='parent_id' value='{{ comment.id }}'>
+                    <input type='submit' value='Reply' class='btn btn-default'>
+                </form>
+             {% else %}
+              <p>You must login to comment</p>
+             {% endif %}
+            </div>
           </span>
-          <div class='comment-reply'>
+
+          <div class='comment-reply' >
               {% for child_comment in comment.children %}
                 <blockquote>
                 <p>{{ child_comment.content }}</p>
@@ -120,36 +137,36 @@
             {% else %}
               <p>You must login to comment</p>
             {% endif %}
-        </div>
+          </div>
 
-        </blockquote>
-
-        <hr/>
+         </blockquote>
+          <hr/>
         {% endfor %}
     </div>
 </div>
 </div>
 </div>
 <div class="col-sm-2 sidenav" align=left >
-  <div class="well" >
-  <h4> Posts Archive </h4>
-  {% for line in aggr_data.archive_counts %}
-    {% if line.isyear %}
-      {% if not forloop.first %}
-        <br>
-      {% endif %}
-      <li><a href="/blog/{{ line.year }}/">{{ line.year }}</a> ({{ line.count }})<br></li>
-    {% else %}
-      <li><a href="/blog/{{ line.yearmonth }}/">{{ line.monthname }}</a> ({{ line.count }})<br></li>
-    {% endif %}
-  {% endfor %}
+      <h4> Posts Archive </h4>
+    <div class="thumbnail" style=" padding:5px 5px 5px 5px; background-color:#ab9bab; font-family: 'Verdana';" >
+      {% for line in aggr_data.archive_counts %}
+        {% if line.isyear %}
+          {% if not forloop.first %}
+          {% endif %}
+         <span style="color:white; "> <li><a href="/blog/{{ line.year }}/" style="color:white; ">{{ line.year }}</a> ({{ line.count }})<br></li>
+        {% else %}
+          <li><a href="/blog/{{ line.yearmonth }}/" style="color:white; ">{{ line.monthname }}</a> ({{ line.count }})<br></li> </span>
+        {% endif %}
 
-  <h4>Tags</h4>
-  {% for line in aggr_data.tag_counts %}
-      <li><a href="/blog/tag/{{ line.tag }}/">{{ line.tag }}</a> ({{ line.count }})<br></li>
-  {% endfor %}
-</div>
-</div>
+      {% endfor %}</div>
+
+      <h4>Tags</h4>
+      <div class="thumbnail" style=" padding:5px 5px 5px 5px; background-color:#ab9bab; font-family: 'Verdana'; " >
+      {% for line in aggr_data.tag_counts %}<span style="color:white; ">
+          <li><a href="/blog/tag/{{ line.tag }}/" style="color:white; ">{{ line.tag }}</a> ({{ line.count }})<br></li></span>
+      {% endfor %}
+      </div>
+    </div>
 </div>
 </div>
 
