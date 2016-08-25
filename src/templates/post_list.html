@@ -3,11 +3,11 @@
 
 <div class="col-sm-2 sidenav" align=left >
  <h4> Popular Posts </h4>
- {% for post in tot_object_list|slice:"5:12" %}
-  <div class="thumbnail" style="float:left; padding:5px 5px 5px 5px; background-color:#ab9bab; font-family: 'Verdana'; font-size: 13px; " >
+ {% for post in tot_object_list|slice:"0:10" %}
+  <div class="thumbnail" style="border-style:none; float:left; padding:5px 5px 5px 5px; background-color:#ab9bab; font-family: 'Verdana'; font-size: 13px; " >
   {% if post.image %}
-      <div style="float:left; padding:0px 5px 0px 0px;"><a href="{{post.get_absolute_url}}">
-          <img src='{{ post.image.url }}' class='img-responsive'/> </a> </div>
+      <div style="float:left;"><a href="{{post.get_absolute_url}}">
+          <img src='{{ post.image.url }}' class='img-responsive' width="195"/> </a> </div>
   {% endif %}
   <a href="{{post.get_absolute_url}}"> <span style="color:white; ">{{ post.title }} </span></a>
   </div>
@@ -36,23 +36,24 @@
               <td>
               <div style="float:left; padding:0px 5px 0px 0px;">
               {% if post.image %}
-              <div style="float:left; padding:0px 5px 0px 0px;"><a href="{{post.get_absolute_url}}"> <img src='{{ post.image.url }}' class='img-thumbnail' width=110/> </a> </div>
+              <div style="float:left; padding:0px 5px 0px 0px;"><a href="{{post.get_absolute_url}}"> <img src='{{ post.image.url }}' class='img-thumbnail' width="110" /> </a> </div>
               {% endif %}
-              <strong><a href="{{post.get_absolute_url}}"> {{ post.title }} </a></strong>
+              <strong><a href="{{post.get_absolute_url}}" > {{ post.title }} </a></strong>
                 {% if post.draft %} <h3>Staff only: Draft</h3>{% endif %}
-                {% if post.publish > today %}<h3>Staff Only: Future Post</h3>{% endif %}</h3>
+                {% if post.publish > today %}<h3>Staff Only: Future Post</h3>{% endif %}
                 {% if post.user.get_full_name %}
-                <small>- by <span style="font-size:12px; font-weight:bold; ">{{ post.user.get_full_name }}</span> {% endif %} on <span style="font-size:12px; font-weight:bold">{{ post.publish }}</span>
-                  <div style="max-height: 8em; overflow: auto;">
+                <small>- by <span style="font-size:12px; font-weight:bold; ">{{ post.user.get_full_name }}</span> {% endif %} on <span style="font-size:12px; font-weight:bold">{{ post.publish }}</span></small>
+                  <div style="max-height: 25em; overflow: hidden;">
                   {{ post.get_markdown|truncatechars_html:350 }}
                   </div>
               </div>
               <div>
-                <span style="align:left">
+                <span style="align:left; ">
                   Tags:
                     {% for tag in post.get_tag_list %}
-                       <a href="/blog/tag/{{ tag }}/" style="font-size:12px;">{{ tag }}</a>{% if not forloop.last %}, {% endif %} </small>
-                    {% endfor %}</span>
+                       <a href="/blog/tag/{{ tag }}/" style="font-size:12px;">{{ tag }}</a>{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </span>
               </div>
               </td>
             </tr>
