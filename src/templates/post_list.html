@@ -1,106 +1,46 @@
 {% extends "base.html" %}
 {% block content %}
-
-<div class="col-sm-2 sidenav" align=left >
- <h4> Popular Posts </h4>
- {% for post in tot_object_list|slice:"0:10" %}
-  <div class="thumbnail" style="border-style:none; float:left; padding:5px 5px 5px 5px; background-color:#ab9bab; font-family: 'Verdana'; font-size: 13px; " >
-  {% if post.image %}
-      <div style="float:left;"><a href="{{post.get_absolute_url}}">
-          <img src='{{ post.image.url }}' class='img-responsive' width="195"/> </a> </div>
-  {% endif %}
-  <a href="{{post.get_absolute_url}}"> <span style="color:white; ">{{ post.title }} </span></a>
-  </div>
- {% endfor %}
-</div>
-
-<div class="container-fluid text-center">
-  <div class="row content">
-    <div class="col-sm-8 text-left"><br/>
-      <div class='col-sm-8' >
-        <form method='GET' action='' class='row'>
-            <div class='input-group'>
-                <input class='form-control' type='text' name='q' placeholder='Search posts' value='{{ request.GET.q }}'/>
-                <span class='input-group-btn'>
-                    <!-- <input class='btn btn-default' type='submit' value='Search' /> -->
-                    <button class='btn btn-default' type='submit'>Search <i class="fa fa-search"></i></button>
-                </span>
-            </div>
-        </form>
+    <div class="col-lg-9">
+     <div class="col-lg-12">
+     <form method='GET' action='' class='row'>
+         <div class='input-group'>
+          <input class='form-control' type='text' name='q' placeholder='Search posts' value='{{ request.GET.q }}'/>
+          <span class='input-group-btn'>
+             <button class='btn btn-default' type='submit'>Search <i class="fa fa-search"></i></button>
+          </span>
+         </div>
+      </form>
      </div>
-    <br/><br/>
-     <table class="table table-responsive" style="border:none;">
-       <tbody>
-      {% for post in object_list %}
-            <tr style="border-bottom:1px solid #ddd;">
-              <td>
-              <div style="float:left; padding:0px 5px 0px 0px;">
-              {% if post.image %}
-              <div style="float:left; padding:0px 5px 0px 0px;"><a href="{{post.get_absolute_url}}"> <img src='{{ post.image.url }}' class='img-thumbnail' width="110" /> </a> </div>
-              {% endif %}
-              <strong><a href="{{post.get_absolute_url}}" > {{ post.title }} </a></strong>
-                {% if post.draft %} <h3>Staff only: Draft</h3>{% endif %}
-                {% if post.publish > today %}<h3>Staff Only: Future Post</h3>{% endif %}
-                {% if post.user.get_full_name %}
-                <small>- by <span style="font-size:12px; font-weight:bold; ">{{ post.user.get_full_name }}</span> {% endif %} on <span style="font-size:12px; font-weight:bold">{{ post.publish }}</span></small>
-                  <div style="max-height: 25em; overflow: hidden;">
-                  {{ post.get_markdown|truncatechars_html:350 }}
-                  </div>
-              </div>
-              <div>
-                <span style="align:left; ">
-                  Tags:
-                    {% for tag in post.get_tag_list %}
-                       <a href="/blog/tag/{{ tag }}/" style="font-size:12px;">{{ tag }}</a>{% if not forloop.last %}, {% endif %}
-                    {% endfor %}
-                </span>
-              </div>
-              </td>
-            </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-      <div class="pagination">
+
+    {% for post in object_list %}
+      {% if post.image %} <p> <img src='{{ post.image.url }}' class='img-responsive'> </p> {% endif %}
+       <a href="{{post.get_absolute_url}}" > <h3 class="ctitle">{{ post.title }}</h3> </a>
+       {% if post.draft %} <h4 class="ctitle">Staff only: Draft</h4> {% endif %}
+       {% if post.publish > today %}<h4 class="ctitle">Staff Only: Future Post</h4> {% endif %}
+       {% if post.user.get_full_name %} <p><csmall> Posted: {{ post.publish }} </csmall>|<csmall2> By: {{ post.user.get_full_name }}<csmall2> {% endif %}
+       <p>{{ post.get_markdown|truncatechars_html:350 }} <a href={{post.get_absolute_url}}>[Read More]</a> </p>
+       <div class="hline"></div>
+
+    {% endfor %}
+
+    <div class="pagination">
           <span class="step-links">
               {% if object_list.has_previous %}
                   <a href="?{{ page_request_var }}={{ object_list.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">previous</a>
               {% endif %}
               <span class="current">
-                  Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.
+               {% if object_list.paginator.num_pages %}   Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}. {% endif %}
               </span>
               {% if object_list.has_next %}
                   <a href="?{{ page_request_var }}={{ object_list.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">next</a>
               {% endif %}
           </span>
-       </div>
-    </div>
-
-
-    <div class="col-sm-2 sidenav" align=left >
-      <h4> Posts Archive </h4>
-    <div class="thumbnail" style=" padding:5px 5px 5px 5px; background-color:#ab9bab; font-family: 'Verdana' " >
-      {% for line in aggr_data.archive_counts %}
-        {% if line.isyear %}
-          {% if not forloop.first %}
-          {% endif %}
-         <span style="color:white; "> <li><a href="/blog/{{ line.year }}/" style="color:white; ">{{ line.year }}</a> ({{ line.count }})<br></li>
-        {% else %}
-          <li><a href="/blog/{{ line.yearmonth }}/" style="color:white; ">{{ line.monthname }}</a> ({{ line.count }})<br></li> </span>
-        {% endif %}
-
-      {% endfor %}</div>
-
-      <h4>Tags</h4>
-      <div class="thumbnail" style=" padding:5px 5px 5px 5px; background-color:#ab9bab; font-family: 'Verdana' " >
-      {% for line in aggr_data.tag_counts %}<span style="color:white; ">
-          <li><a href="/blog/tag/{{ line.tag }}/" style="color:white; ">{{ line.tag }}</a> ({{ line.count }})<br></li></span>
-      {% endfor %}
-      </div>
     </div>
 
    </div>
- </div>
-
-
-
 {% endblock content %}
+
+
+
+
+

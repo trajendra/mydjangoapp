@@ -1,213 +1,134 @@
 {% load staticfiles %}
 
 <!DOCTYPE HTML>
-<html lang="en-US">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>{% block head_title %} XChange Idea Network {% endblock head_title %}</title>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href='{% static "assets/ico/favicon.ico" %}'>
+    <title>{% block head_title %} XChange Idea Network  {% endblock head_title %}</title>
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
-<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css' >
-<link rel='stylesheet' href='{% static "css/base.css" %}' />
+    <link href='{% static "assets/css/bootstrap.css" %}' rel="stylesheet">
+    <link href='{% static "assets/css/style.css" %}' rel="stylesheet">
+    <link href='{% static "assets/css/font-awesome.min.css" %}' rel="stylesheet">
+    <link href='{% static "css/base.css" %}' rel='stylesheet'/>
 
-<style>
- {% block style %}
-   .navbar {
-     margin-bottom: 0; border-radius: 0;
-   }
-   strong{
-     font-size:15px;
-   }
-   small{
-     font-size:14px;
-   }
+    <script src="assets/js/modernizr.js"></script>
 
-   body {
-      position: relative;
-      font-size:14px;
-  }
-
-  .sidenav {
-         padding: 10px 10px;
-         height:125%;
-         font-size:13px;
-         color: #434980;
-
-   }
-
-   a:link, a:visited {
-    text-decoration: none;
-   /* display: inline-block;*/
-   /* white-space: pre-wrap; *//* css-3 */
-   /* white-space: -moz-pre-wrap; *//* Mozilla, since 1999 */
-   /* white-space: -pre-wrap; *//* Opera 4-6 */
-   /* white-space: -o-pre-wrap;*/ /* Opera 7 */
-   /* word-wrap: break-word; *//* Internet Explorer 5.5+ */
-}
-
-
-    a:hover, a:active {
-
-    font-weight: bold;
-    }
-
-   /* Set black background color, white text and some padding */
-   footer {
-     background-color: #555;
-     color: white;
-     padding: 15px;
-   }
-
-   /* On small screens, set height to 'auto' for sidenav and grid */
-   @media screen and (max-width: 767px) {
-     .sidenav {
-       height: auto;
-       padding: 10px 10px;
-       font-size:small;
-     }
-     .row.content {height:auto;}
-   }
-
-     img:hover {
-      -webkit-filter: grayscale(0%);
-      -webkit-transition: .5s ease-in-out;
-      -moz-filter: grayscale(0%);
-      -moz-transition: .5s ease-in-out;
-      -o-filter: grayscale(0%);
-      -o-transition: .5s ease-in-out;
-      filter: grayscale(0%);
-     }
-
-     img {
-      -webkit-filter: grayscale(100%);
-      -webkit-transition: .5s ease-in-out;
-      -moz-filter: grayscale(100%);
-      -moz-transition: .5s ease-in-out;
-      -o-filter: grayscale(100%);
-      -o-transition: .5s ease-in-out;
-      filter: grayscale(100%);
-     }
-{% endblock style %}
-</style>
-
-{% block head_extra %} {% endblock head_extra %}
+    {% block head_extra %} {% endblock head_extra %}
 </head>
 
-<body data-spy="scroll" data-target=".navbar" data-offset="50">
-
-  <nav class="navbar navbar-inverse">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+<body>
+  <div class="navbar navbar-default" role="navigation" >
+    <div class="container">
+      <div class="navbar-header" >
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="/" > xChangeIdea.Net </a>
+        <a class="navbar-brand" href="/" style="margin-left:-160px" > XCHANGE IDEA . NET </a>
       </div>
-      <div class="collapse navbar-collapse" id="myNavbar" >
-        <ul class="nav navbar-nav navbar-center" >
-          <li class="active"><a href='{% url "posts:list" %}'>Home</a></li>
+      <div class="navbar-collapse collapse navbar-right" >
+        <ul class="nav navbar-nav" >
+          <li class="active"><a href='{% url "posts:list" %}'>HOME</a></li>
           {% block post_detail_link %}
           {% endblock %}
-          <li><a href="/about">About Us</a></li>
-          <li><a href={% url "contact" %}>Contact</a></li>
+          <li><a href="/about">ABOUT US</a></li>
+          <li><a href={% url "contact" %}>CONTACT</a></li>
           {% if request.user.is_authenticated %}
           {% if user.is_staff %}
-          <li><a href='/blog/create/'><span class="glyphicon glyphicon-pencil"></span> Create Post</a></li>
+          <li><a href='/blog/create/'><span class="glyphicon glyphicon-pencil"></span> CREATE POST</a></li>
           {% endif %}
           {% endif %}
         </ul>
 
         <ul class="nav navbar-nav navbar-right">
           {% if not request.user.is_authenticated %}
-          <li><a href={% url "register" %}><span class="glyphicon glyphicon-user"></span> Register</a></li>
-          <li><a href={% url "login" %}><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+          <li><a href={% url "register" %}><span class="glyphicon glyphicon-user"></span> REGISTER</a></li>
+          <li><a href={% url "login" %}><span class="glyphicon glyphicon-log-in"></span> LOGIN</a></li>
           {% else %}
-          <li class='pull-right'><a href='{% url "logout" %}'><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+          <li class='pull-right'><a href='{% url "logout" %}'><span class="glyphicon glyphicon-log-out"></span> LOGOUT</a></li>
           {% endif %}
 
         </ul>
       </div>
     </div>
-  </nav>
+  </div>
+  {% block total_content %}
+  <div class="col-sm-2">
+ </br>
+ <h4> Popular Posts </h4>
 
-  {% block content %} {% endblock content %}
+  <div class="hline"></div>
+  <ul class="popular-posts">
+  {% for post in tot_object_list|slice:"0:10" %}
+    <li><p><a href="{{post.get_absolute_url}}" class='img-thumbnail'>
+    {% if post.image %}
+       <img src='{% autoescape off %} {{ post.image.url }} {% endautoescape %}' alt="Popular Post" >
+    {% endif %}
+       {{ post.title }} </a></p>
+    </li>
+  {% endfor %}
+  </ul>
+   </div>
+  <div class="container mtb">
+  <div class="row">
+ {% block content %} {% endblock content %}
+  <div class="col-sm-2" >
+     <h4>Popular Tags</h4>
+	 <div class="hline"></div>
+	  <p>
+      {% for line in aggr_data.tag_counts %}
+        <a class="btn btn-theme" href="/blog/tag/{{ line.tag }}/" role="button">{{ line.tag }}({{ line.count }})</a>
+      {% endfor %}
+      </p>
 
-  <footer class="container-fluid text-center">
-    All rights reserved &copy; XChangeIdea.Net 2016  - Design & developed by Rajendra T
-  </footer>
+    <div class="spacing"></div>
+     <h4>Archive</h4>
+	 <div class="hline"></div>
+	  <p>
+      {% for line in aggr_data.archive_counts %}
+        {% if line.isyear %}
+          {% if not forloop.first %}{% endif %}
+          <li><a href="/blog/{{ line.year }}/" >{{ line.year }}</a> ({{ line.count }})<br></li>
+        {% else %}
+          <li><a href="/blog/{{ line.yearmonth }}/" >{{ line.monthname }}</a> ({{ line.count }})<br></li>
+        {% endif %}
+      {% endfor %}
+      </p>
+     </div>
+  </div>
+ </div>
+{% endblock total_content %}
+  <div id="footerwrap">
+	<h4>Social Links</h4>
+	<div class="hline-w"></div>
+	<p class="centered">
+	    <a href="#"><i class="fa fa-dribbble"></i></a>
+		<a href="#"><i class="fa fa-facebook"></i></a>
+		<a href="#"><i class="fa fa-twitter"></i></a>
+		<a href="#"><i class="fa fa-instagram"></i></a>
+		<a href="#"><i class="fa fa-tumblr"></i></a>
+        <a href="#"> &copy; 2016, All rights reserved, </a>
+        <a href="#"> XCHANGEIDEA.NET. </a>
 
-<!-- Latest compiled and minified JavaScript -->
-<script src="http://code.jquery.com/jquery-1.12.2.min.js"   integrity="sha256-lZFHibXzMHo3GGeehn1hudTAP3Sc0uKXBXAzHX1sjtk="   crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-<script type="text/javascript">
- $(document).ready(function(){
-    $(".content-markdown").each(function(){
-            var content = $(this).text()
-            var markedContent = marked(content)
-            $(this).html(markedContent)
-    })
-    $(".post-detail-item img").each(function(){
-            $(this).addClass("img-responsive");
-    })
-
-
-
-    var contentInput = $("#id_content");
-
-    function setContent(value){
-        var markedContent = marked(value)
-        $("#preview-content").html(markedContent)
-        $("#preview-content img").each(function(){
-            $(this).addClass("img-responsive")
-        })
-    }
-    setContent(contentInput.val())
-
-    contentInput.keyup(function(){
-        var newContent = $(this).val()
-        setContent(newContent)
-    })
-
-    var titleInput = $("#id_title");
-
-
-
-    function setTitle(value) {
-        $("#preview-title").text(value)
-    }
-    setTitle(titleInput.val())
-
-    titleInput.keyup(function(){
-        var newContent = $(this).val()
-        setTitle(newContent)
-    })
-
-    $(".comment-reply-btn").click(function(event){
-        event.preventDefault();
-        $(this).parent().next(".comment-reply").fadeToggle();
-    }
-    )
-
-     $(function () {
-
-    $('.toggle').click(function (event) {
-        event.preventDefault();
-        var target = $(this).attr('href');
-        $(target).toggleClass('hidden show');
-    });
-
-    });
+	</p>
+  </div><! --/footerwrap -->
 
 
-    // preview-title
-    // preview-content
-
-  })
-</script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  <script src='{% static "assets/js/bootstrap.min.js" %}'></script>
+  <script src='{% static "assets/js/retina-1.1.0.js" %}'></script>
+  <script src='{% static "assets/js/jquery.hoverdir.js" %}'></script>
+  <script src='{% static "assets/js/jquery.hoverex.min.js" %}'></script>
+  <script src='{% static "assets/js/jquery.prettyPhoto.js" %}'></script>
+  <script src='{% static "assets/js/jquery.isotope.min.js" %}'></script>
+  <script src='{% static "assets/js/custom.js" %}'></script>
 
 </body>
 </html>
