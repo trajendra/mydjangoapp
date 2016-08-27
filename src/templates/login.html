@@ -2,7 +2,7 @@
 {% load crispy_forms_tags %}
 
 
-{% block content %}
+{% block total_content %}
 <div class="container-fluid text-left" height=400>
 <div class='col-sm-6 col-sm-offset-3'>
 <h1>{{ title }}</h1>
@@ -12,14 +12,10 @@
 {{ form|crispy }}
 <input type='submit' class='btn btn-default' value='{{ title }}' />
 </form>
-<br></br>
-<br></br>
-<br></br>
-<br></br>
-<br></br>
-<br></br>
-<br></br>
-<br></br>
+
+
+
+
 </div>
 </div>
-{% endblock content %}
+{% endblock total_content %}

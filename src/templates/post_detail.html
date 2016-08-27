@@ -9,7 +9,7 @@
 
 {% block content %}
 
-<div class='col-sm-9' >
+  <div class='col-sm-9' >
   <div class='col-sm-12'>
     <span style="color:green; font-weight:bold; "> {% include "messages_display.html" %}</span>
     {% if request.user.is_authenticated %}
@@ -24,7 +24,7 @@
   </div>
 
    <p> {% if instance.image %} <img src='{{ instance.image.url }}' class='img-responsive' />{% endif %} </p>
-   <h3 class="ctitle">{{ title }} </h3>
+   <a href='{{ instance.get_absolute_url }}'> <h3 class="ctitle">{{ title }} </h3> </a>
    <p> {% if instance.draft %} <h4 class="ctitle">Staff only: Draft</h4> {% endif %}
     {% if instance.publish > today %}<h4 class="ctitle">Staff Only: Future Post</h4> {% endif %}
     {% if instance.user.get_full_name %} <csmall> Posted: {{ instance.publish }} </csmall>|<csmall2> By: {{ instance.user.get_full_name }}</csmall2> {% endif %}
