@@ -7,6 +7,7 @@ from django.core.urlresolvers import reverse
 from django.db import models
 
 
+
 class CommentManager(models.Manager):
     def all(self):
         qs = super(CommentManager, self).filter(parent=None)

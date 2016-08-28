@@ -130,5 +130,21 @@
   <script src='{% static "assets/js/jquery.isotope.min.js" %}'></script>
   <script src='{% static "assets/js/custom.js" %}'></script>
 
+  <script>
+      /* like counting */
+        $(document).ready(function() {
+            $('.post-likes').click(function() {
+                var id;
+                id = $(this).attr('data-post-id');
+                $.get('/like-blog/', {
+                    post_id: id
+                }, function(data) {
+                    $('.like_count_blog').html(data);
+                });
+            });
+        });
+
+  </script>
+
 </body>
 </html>

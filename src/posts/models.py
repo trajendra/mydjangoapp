@@ -61,11 +61,15 @@ class Post(models.Model):
     updated = models.DateTimeField(auto_now=True, auto_now_add=False)
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
     tags = models.CharField(max_length=200)
-
+    likes = models.PositiveIntegerField(default=0)
     objects = PostManager()
 
     def get_tag_list(self):
         return re.split(" ", self.tags)
+
+    @property
+    def total_likes(self):
+        return self.likes.count()
 
     def __unicode__(self):
         return self.title
@@ -125,3 +129,5 @@ def pre_save_post_receiver(sender, instance, *args, **kwargs):
 
 
 pre_save.connect(pre_save_post_receiver, sender=Post)
+
+

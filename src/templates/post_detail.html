@@ -11,7 +11,6 @@
 
   <div class='col-sm-9' >
   <div class='col-sm-12'>
-    <span style="color:green; font-weight:bold; "> {% include "messages_display.html" %}</span>
     {% if request.user.is_authenticated %}
     {% if request.user.is_staff %}
     <div style="float:right; padding:5px 5px 5px 5px;">
@@ -35,6 +34,23 @@
     <p>{{ instance.get_markdown }}</p>
 
    <div class="spacing"></div>
+
+   <h6>LIKE:</h6>
+    <p>
+       <button class="likes post-likes" id="heart-icon" data-post-id="{{ instance.id }}">
+       {% if liked %}
+       <i class="heart-shaped fa fa-heart" style="display: inline-flex; border-color:white; font-size:25px; color:deeppink; background-color:white ">
+       <span class="like_count_blog" id="heart-counter" style="font-size:20px; font-weight:bold; padding-left: 3px; "> {% if instance.likes %}{{ instance.likes }} {% endif %}</span>
+       </i>
+       {% else %}
+       <i class="heart-shaped fa fa-heart" style="display: inline-flex; border-color:white; font-size:25px; color:deeppink; background-color:white">
+       <span class="like_count_blog" id="heart-counter" style="font-size:20px; font-weight:bold; padding-left: 3px; ">{% if instance.likes %}{{ instance.likes }} {% endif %}</span>
+       </i>
+       {% endif %}
+
+       </button>
+
+   </p>
 
    <h6>SHARE:</h6>
    <p class='share'>
@@ -111,7 +127,7 @@
           <hr/>
         {% endfor %}
     </div>
-</div>
+   </div>
 
 
 

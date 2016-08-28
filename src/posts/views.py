@@ -54,7 +54,6 @@ def post_create(request):
     }
     return render(request, "post_form.html", context)
 
-
 def post_detail(request, slug, year, month):
     instance = get_object_or_404(Post, publish__year=int(year), publish__month=int(month), slug=slug)
     if instance.publish > timezone.now().date() or instance.draft:
@@ -65,6 +64,13 @@ def post_detail(request, slug, year, month):
         "content_type": instance.get_content_type,
         "object_id": instance.id
     }
+
+    post_id = instance.pk
+    liked = False
+    if request.session.get('has_liked_' + str(post_id), liked):
+        liked = True
+        print("liked {}_{}".format(liked, post_id))
+
     form = CommentForm(request.POST or None, initial=initial_data)
     if form.is_valid() and request.user.is_authenticated():
         c_type = form.cleaned_data.get("content_type")
@@ -95,6 +101,7 @@ def post_detail(request, slug, year, month):
         recipients = ['mail2raajj@gmail.com']
         send_mail(subject, message, sender, recipients)
         return HttpResponseRedirect(new_comment.content_object.get_absolute_url())
+
     posts, pagedata = init()
     queryset_list = Post.objects.active()  # .order_by("-timestamp")
 
@@ -109,9 +116,30 @@ def post_detail(request, slug, year, month):
         "comments": comments,
         "comment_form": form,
         "aggr_data": pagedata,
+        'liked': liked,
     }
     return render(request, "post_detail.html", context)
 
+def like_count_blog(request):
+    liked = False
+    if request.method == 'GET':
+        post_id = request.GET['post_id']
+        post = Post.objects.get(id=int(post_id))
+        if request.session.get('has_liked_'+post_id, liked):
+            print("unlike")
+            if post.likes > 0:
+                likes = post.likes - 1
+                try:
+                    del request.session['has_liked_'+post_id]
+                except KeyError:
+                    print("keyerror")
+        else:
+            print("like")
+            request.session['has_liked_'+post_id] = True
+            likes = post.likes + 1
+    post.likes = likes
+    post.save()
+    return HttpResponse(likes, liked)
 
 def post_list(request):
     posts, pagedata = init()
@@ -174,7 +202,6 @@ def post_update(request, year=None, month=None, slug=None):
     }
     return render(request, "post_form.html", context)
 
-
 def post_delete(request, year=None, month=None, slug=None):
     if not request.user.is_staff or not request.user.is_superuser:
         raise Http404
@@ -183,11 +210,9 @@ def post_delete(request, year=None, month=None, slug=None):
     messages.success(request, "Successfully deleted")
     return redirect("posts:list")
 
-
 # new code #
 MONTH_NAMES = ('', 'January', 'Feburary', 'March', 'April', 'May', 'June', 'July',
                'August', 'September', 'October', 'November', 'December')
-
 
 def init():
     posts = Post.objects.active()
