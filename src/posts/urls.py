@@ -19,5 +19,8 @@ urlpatterns = [
     url(r'^blog/(?P<year>\d{4})/(?P<month>\d{2})/(?P<slug>[-\w]+)/edit/$', post_update, name='update'),
     url(r'^blog/(?P<year>\d{4})/(?P<month>\d{2})/(?P<slug>[-\w]+)/delete/$', post_delete, name='delete'),
     url(r'^like-blog/$', like_count_blog, name='like_count_blog'),
-    url(r'^about/', about, name='about'),
+    url(r'^blog/archive/(\d{4,4})/$', yearview),
+    url(r'^blog/archive/(\d{4,4})/(\d{2,2})/$', monthview),
+    url(r'^blog/tag/([\w\-]+)/$', tagview),
+
 ]

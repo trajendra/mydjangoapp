@@ -1,27 +1,155 @@
-{% extends "base.html" %}
 {% load staticfiles %}
 
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+		<title>XChange Idea Network About Us</title>
+		<meta name="description" content="exchange idea network" />
+		<meta name="keywords" content="google getting started gallery, image gallery, image grid, template, masonry" />
+		<meta name="author" content="xchangeidea" />
+		<link rel="shortcut icon" href='{% static "assets/ico/favicon.ico" %}'>
+	    <link href='{% static "assets/css/bootstrap.css" %}' rel="stylesheet">
+        <link href='{% static "assets/css/style.css" %}' rel="stylesheet">
+        <link href='{% static "assets/css/font-awesome.min.css" %}' rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href='{% static "GridGallery/GridGallery/css/demo.css" %}'/>
+		<link rel="stylesheet" type="text/css" href='{% static "GridGallery/GridGallery/css/component.css" %}' />
+        <script src='{% static "GridGallery/GridGallery/js/modernizr.custom.js" %}'></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+	</head>
+	<body>
+    <div class="navbar navbar-default navbar-fixed-top navbar-shrink" role="navigation" >
+    <a class="navbar-brand" href="/" style="color:white; padding-left:45px; "> XCHANGE IDEA . NET </a>
+    <div class="container">
 
-{% block total_content %}
-<div class="container-fluid text-center" >
-<h2> About Me</h2>
-  <a href="#"><img src="{% static "images/pic1.jpg" %}" alt="My Image" width=100 height=100 class="left" /></a>
-  <h4>Rajendra T</h4>
-  <p>
-     A Full Stack Developer & Business Intelligence Developer.
-  </p>
+      <div class="navbar-header" >
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
 
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
+      </div>
+      <div class="navbar-collapse collapse navbar-right" >
+        <ul class="nav navbar-nav" >
+          <li class="active"><a href='{% url "posts:list" %}'>HOME</a></li>
+          {% block post_detail_link %}
+          {% endblock %}
+          <li><a href="/about">ABOUT US</a></li>
+          <li><a href={% url "contact" %}>CONTACT</a></li>
+          {% if request.user.is_authenticated %}
+          {% if user.is_staff %}
+          <li><a href='/blog/create/'><span class="glyphicon glyphicon-pencil"></span> CREATE POST</a></li>
+          {% endif %}
+          {% endif %}
+        </ul>
 
-</div>
+        <ul class="nav navbar-nav navbar-right">
+          {% if not request.user.is_authenticated %}
+          <li><a href={% url "register" %}><span class="glyphicon glyphicon-user"></span> REGISTER</a></li>
+          <li><a href={% url "login" %}><span class="glyphicon glyphicon-log-in"></span> LOGIN</a></li>
+          {% else %}
+          <li class='pull-right'><a href='{% url "logout" %}'><span class="glyphicon glyphicon-log-out"></span> LOGOUT</a></li>
+          {% endif %}
 
-{% endblock total_content %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+	<div class="container-fluid" style="padding-top:70px;" >
+	 <div id="grid-gallery" class="grid-gallery"  >
+	  <section class="grid-wrap">
+        <ul class="grid">
+		<li class="grid-sizer"></li><!-- for Masonry column width -->
+         {% if not request.user.is_authenticated %}
+         {% for profile in profiles %}
+
+         <li><figure>
+		 {% if profile.image %}<img src='{{ profile.image.url }}' alt="img"/> {% endif %}
+		 <figcaption>
+         <h3>{% if profile.first_name %} {{ profile.first_name }} {% endif %}
+             {% if profile.last_name %} {{ profile.last_name }}   {% endif %}
+         </h3>
+         <p>{% if profile.skills %} {{ profile.skills }}{% endif %}</p>
+         </figcaption>
+		</figure></li>
+
+        {% endfor %}
+
+        {% endif %}
+		</ul>
+	  </section><!-- // grid-wrap -->
+	  <section class="slideshow">
+	  <ul>
+      {% if not request.user.is_authenticated %}
+      {% for profile in profiles %}
+
+       <li><figure>
+       <div class="col-sm-4">
+		 {% if profile.image %}<img src='{{ profile.image.url }}' alt="img"/> {% endif %}</div>
+		 <figcaption>
+         <h3>{% if profile.first_name %} {{ profile.first_name }} {% endif %}
+             {% if profile.last_name %} {{ profile.last_name }}   {% endif %}
+         </h3>
+         <p>{% if profile.skills %} {{ profile.skills }}{% endif %}</p>
+         <a href="{{ profile.get_absolute_url }}" style="color:#ff922c;"> [More Details..] </a>
+         </figcaption>
+		</figure></li>
+      {% endfor %}
+      {% endif %}
+       </ul>
+		<nav>
+		<span class="icon nav-prev"></span>
+		<span class="icon nav-next"></span>
+		<span class="icon nav-close"></span>
+		</nav>
+		<div class="info-keys icon">Navigate with arrow keys</div>
+	  </section><!-- // slideshow -->
+	 </div><!-- // grid-gallery -->
+
+    <div id="grid-gallery" class="grid-gallery"  >
+	  <section class="grid-wrap">
+        <ul class="grid">
+		<li class="grid-sizer" ></li><!-- for Masonry column width -->
+         {% if request.user.is_authenticated %}
+             {% if request.user.is_staff %}
+         {% for profile in profiles %}
+               {% if profile.user == request.user %}
+         <li>
+             <figure>
+             <a href='{{profile.get_absolute_url}}update' class="btn btn-info btn-sm" >
+             <span class="glyphicon glyphicon-edit"></span> Update Profile</a>
+             {% if profile.image %}<img src='{{ profile.image.url }}' alt="img"/> {% endif %}
+             <figcaption>
+             <h3>{% if profile.first_name %} {{ profile.first_name }} {% endif %}
+                 {% if profile.last_name %} {{ profile.last_name }}   {% endif %}
+             </h3>
+                 <p>{% if profile.skills %} {{ profile.skills }}{% endif %}</p>
+             </figcaption>
+            </figure>
+         </li>
+        {% endif %}
+        {% endfor %}
+         {% endif %}
+        {% endif %}
+		</ul>
+	  </section><!-- // grid-wrap -->
+
+	 </div><!-- // grid-gallery -->
+
+	</div>
+		<script src='{% static "GridGallery/GridGallery/js/imagesloaded.pkgd.min.js" %}'></script>
+		<script src='{% static "GridGallery/GridGallery/js/masonry.pkgd.min.js" %}'></script>
+		<script src='{% static "GridGallery/GridGallery/js/classie.js" %}'></script>
+		<script src='{% static "GridGallery/GridGallery/js/cbpGridGallery.js" %}'></script>
+		<script>
+			new CBPGridGallery( document.getElementById( 'grid-gallery' ) );
+		</script>
+
+        <script src='{% static "assets/js/bootstrap.min.js" %}'></script>
+	</body>
+</html>

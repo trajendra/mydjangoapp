@@ -36,7 +36,7 @@ INSTALLED_APPS = [
     'posts',
     'ckeditor',
     'ckeditor_uploader',
-
+    'authors',
 ]
 
 MARKDOWN_DEUX_STYLES = {
@@ -213,3 +213,4 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'e@mail.xchangeidea.net'
 EMAIL_HOST_PASSWORD = 'xchangeidea'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+

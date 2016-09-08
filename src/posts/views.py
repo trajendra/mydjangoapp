@@ -29,10 +29,6 @@ from .forms import PostForm
 from .models import Post
 
 
-def about(request):
-    return render(request, 'about.html')
-
-
 def category(request):
     return render(request, 'Home.html')
 

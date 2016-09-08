@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'^logout/', logout_view, name='logout'),
     url(r'^', include("posts.urls", namespace='posts')),
     url(r'^comments/', include("comments.urls", namespace='comments')),
+    url(r'^', include("authors.urls", namespace='authors')),
     url(r'^contact/', contact_view, name='contact'),
     url(r'^ckeditor/', include('ckeditor_uploader.urls')),
 ]

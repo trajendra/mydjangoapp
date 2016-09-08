@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+
+{% block total_content %}
+
+<div class="col-sm-2" >
+  <p><a href="" class='img-thumbnail'>
+    {% if instance.image %}
+       <img src='{% autoescape off %} {{ instance.image.url }} {% endautoescape %}' alt="Profile Image" >
+    {% endif %}
+         </a>
+  </p>
+ </div>
+
+<div class="container mtb" style="padding-left: 100px; padding-right: 100px;">
+  <div class="row">
+  {% if request.user.is_authenticated %}{% if request.user.is_staff %}
+   <a href='{{instance.get_absolute_url}}update' class="btn btn-info btn-sm" >
+       <span class="glyphicon glyphicon-edit"></span> Update Profile</a>  {% endif %} {% endif %}
+   <p>  <a href=""><h2>{% if instance.first_name %} {{ instance.first_name }} {% endif %}
+      {% if instance.last_name %} {{ instance.last_name }}   {% endif %}</h2></a></p><p>
+      {% if instance.profile %} {{ instance.profile|safe }}{% endif %}
+    </p>
+  </div>
+</div>
+
+{% endblock total_content %}

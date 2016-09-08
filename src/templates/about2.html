@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block total_content %}
+
+
+
+
+
+
+   <div class="pictures">
+			 {% if not request.user.is_authenticated %}
+             {% for profile in profiles %}
+               {% if profile.image %}
+                <img src='{{ profile.image.url }}' />
+               {% endif %}
+            {% endfor %}
+            {% endif %}
+
+		</div>
+
+
+
+
+
+ {% if request.user.is_authenticated %}
+  {% if request.user.is_staff %}
+   {% for profile in profiles %}
+    {% if profile.user != request.user %}
+     <div class="col-sm-2" >
+     <a href='{{profile.get_absolute_url}}update' class="btn btn-info btn-sm" >
+     <span class="glyphicon glyphicon-edit"></span> Update Profile</a>
+      <div class="img-thumbnail">
+      <a href={{ profile.get_absolute_url }} >
+      {% if profile.image %} <img src='{{ profile.image.url }}' class='img-responsive' >
+      {% endif %}
+
+      {% if profile.first_name %} {{ profile.first_name }} {% endif %}
+      {% if profile.last_name %} {{ profile.last_name }}   {% endif %}</a>
+      {% if profile.skills %} {{ profile.skills }}{% endif %}
+      </div>
+     </div>
+    {% endif %}
+   {% endfor %}
+  {% endif %}
+ {% endif %}
+
+
+
+
+
+
+
+{% endblock total_content %}

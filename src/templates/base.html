@@ -16,13 +16,11 @@
     <link href='{% static "assets/css/font-awesome.min.css" %}' rel="stylesheet">
     <link href='{% static "css/base.css" %}' rel='stylesheet'/>
 
-    <script src="assets/js/modernizr.js"></script>
-
     {% block head_extra %} {% endblock head_extra %}
 </head>
 
 <body>
-  <div class="navbar navbar-default" role="navigation" >
+  <div class="navbar navbar-default navbar-fixed-top navbar-shrink" role="navigation" >
     <a class="navbar-brand" href="/" style="color:white; padding-left:45px; "> XCHANGE IDEA . NET </a>
     <div class="container">
 
@@ -97,9 +95,9 @@
       {% for line in aggr_data.archive_counts %}
         {% if line.isyear %}
           {% if not forloop.first %}{% endif %}
-          <li><a href="/blog/{{ line.year }}/" >{{ line.year }}</a> ({{ line.count }})<br></li>
+          <a href="/blog/{{ line.year }}/" >{{ line.year }}</a> ({{ line.count }})<br/>
         {% else %}
-          <li><a href="/blog/{{ line.yearmonth }}/" >{{ line.monthname }}</a> ({{ line.count }})<br></li>
+          <a href="/blog/{{ line.yearmonth }}/" >{{ line.monthname }}</a> ({{ line.count }})<br/>
         {% endif %}
       {% endfor %}
       </p>
@@ -107,6 +105,11 @@
   </div>
  </div>
 {% endblock total_content %}
+
+  <a href="#" class="back-to-top" style="display:inline;">
+     <i class="fa fa-arrow-circle-up"></i>
+  </a>
+
   <div id="footerwrap">
 	<h4>Social Links</h4>
 	<div class="hline-w"></div>
@@ -119,7 +122,6 @@
         <a href="/"> &copy; 2016, All rights reserved, XCHANGEIDEA.NET. </a>
 	</p>
   </div><! --/footerwrap -->
-
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
   <script src='{% static "assets/js/bootstrap.min.js" %}'></script>
@@ -142,9 +144,60 @@
                     $('.like_count_blog').html(data);
                 });
             });
+
+
         });
 
+
+
   </script>
+
+  <script>
+
+    $(document).ready(function() {
+    var offset = 250;
+    var duration = 300;
+    $(window).scroll(function() {
+    if ($(this).scrollTop() > offset) {
+    $('.back-to-top').fadeIn(duration);
+
+
+    } else {
+    $('.back-to-top').fadeOut(duration);
+    }
+    });
+
+    $('.back-to-top').click(function(event) {
+    event.preventDefault();
+    $('html, body').animate({scrollTop: 0}, duration);
+    return false;
+    })
+    });
+
+   </script>
+
+  <script type="text/javascript">
+     $(document).ready(function(){
+        $(".comment-reply-btn").click(function(event){
+            event.preventDefault();
+            $(this).parent().next(".comment-reply").fadeToggle();
+        }
+        )
+
+         $(function () {
+
+        $('.toggle').click(function (event) {
+            event.preventDefault();
+            var target = $(this).attr('href');
+            $(target).toggleClass('hidden show');
+        });
+
+        });
+
+      })
+  </script>
+
+
 
 </body>
 </html>

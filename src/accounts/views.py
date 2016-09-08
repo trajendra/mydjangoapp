@@ -39,6 +39,13 @@ def register_view(request):
         user.set_password(password)
         user.save()
         new_user = authenticate(username=user.username, password=password)
+
+        subject = ' Welcome to Xchange Idea Network .. '
+        message = ' Hi ' + str(user.username) + ' \n\n Thank you for registering with us \n\n Please confirm your email id by clicking on the below url '
+        sender = 'XChangeIdea.Net <e@mail.xchangeidea.net>'
+        recipients = [user.email]
+        send_mail(subject, message, sender, recipients)
+
         login(request, new_user)
         if next:
             return redirect(next)
@@ -48,6 +55,7 @@ def register_view(request):
         "form": form,
         "title": title
     }
+
     return render(request, "login.html", context)
 
 
