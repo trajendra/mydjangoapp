@@ -49,10 +49,10 @@
 
         <ul class="nav navbar-nav navbar-right">
           {% if not request.user.is_authenticated %}
-          <li><a href={% url "register" %}><span class="glyphicon glyphicon-user"></span> REGISTER</a></li>
-          <li><a href={% url "login" %}><span class="glyphicon glyphicon-log-in"></span> LOGIN</a></li>
+          <li><a href={% url "account_signup" %}><span class="glyphicon glyphicon-user"></span> REGISTER</a></li>
+          <li><a href={% url "account_login" %}><span class="glyphicon glyphicon-log-in"></span> LOGIN</a></li>
           {% else %}
-          <li class='pull-right'><a href='{% url "logout" %}'><span class="glyphicon glyphicon-log-out"></span> LOGOUT</a></li>
+          <li class='pull-right'><a href='{% url "account_logout" %}'><span class="glyphicon glyphicon-log-out"></span> LOGOUT</a></li>
           {% endif %}
 
         </ul>

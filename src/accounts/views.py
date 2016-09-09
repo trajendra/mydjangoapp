@@ -56,7 +56,7 @@ def register_view(request):
         "title": title
     }
 
-    return render(request, "login.html", context)
+    return render(request, "signup.html", context)
 
 
 def logout_view(request):

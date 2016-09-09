@@ -20,6 +20,7 @@
 </head>
 
 <body>
+
   <div class="navbar navbar-default navbar-fixed-top navbar-shrink" role="navigation" >
     <a class="navbar-brand" href="/" style="color:white; padding-left:45px; "> XCHANGE IDEA . NET </a>
     <div class="container">
@@ -49,10 +50,10 @@
 
         <ul class="nav navbar-nav navbar-right">
           {% if not request.user.is_authenticated %}
-          <li><a href={% url "register" %}><span class="glyphicon glyphicon-user"></span> REGISTER</a></li>
-          <li><a href={% url "login" %}><span class="glyphicon glyphicon-log-in"></span> LOGIN</a></li>
+          <li><a href={% url "account_signup" %}><span class="glyphicon glyphicon-user"></span> REGISTER</a></li>
+          <li><a href={% url "account_login" %}><span class="glyphicon glyphicon-log-in"></span> LOGIN</a></li>
           {% else %}
-          <li class='pull-right'><a href='{% url "logout" %}'><span class="glyphicon glyphicon-log-out"></span> LOGOUT</a></li>
+          <li class='pull-right'><a href='{% url "account_logout" %}'><span class="glyphicon glyphicon-log-out"></span> LOGOUT</a></li>
           {% endif %}
 
         </ul>
@@ -105,23 +106,40 @@
   </div>
  </div>
 {% endblock total_content %}
-
+ <hr/>
   <a href="#" class="back-to-top" style="display:inline;">
      <i class="fa fa-arrow-circle-up"></i>
   </a>
 
   <div id="footerwrap">
-	<h4>Social Links</h4>
-	<div class="hline-w"></div>
-	<p class="centered">
-	    <a href="#"><i class="fa fa-dribbble"></i></a>
-		<a href="#"><i class="fa fa-facebook"></i></a>
-		<a href="#"><i class="fa fa-twitter"></i></a>
-		<a href="#"><i class="fa fa-instagram"></i></a>
-		<a href="#"><i class="fa fa-tumblr"></i></a>
-        <a href="/"> &copy; 2016, All rights reserved, XCHANGEIDEA.NET. </a>
-	</p>
-  </div><! --/footerwrap -->
+	 	<div class="container">
+		 	<div class="row" >
+		 		<div class="col-lg-4">
+
+                 <br/>
+                    <a href="#">&copy; 2016, www.xchangeidea.net |  All Rights Reserved.</a>
+		 		</div>
+		 		<div class="col-lg-4">
+
+
+		 			<p>
+		 				<a href="#"><i class="fa fa-dribbble"></i></a>
+		 				<a href="#"><i class="fa fa-facebook"></i></a>
+		 				<a href="#"><i class="fa fa-twitter"></i></a>
+		 				<a href="#"><i class="fa fa-instagram"></i></a>
+		 				<a href="#"><i class="fa fa-tumblr"></i></a>
+		 			</p>
+		 		</div>
+		 		<div class="col-lg-4">
+
+                    <br/>
+                    <a href="#"> Contact Us</a> |
+		 			<a href="#"> Sitemap</a>
+		 		</div>
+
+		 	</div><! --/row -->
+	 	</div><! --/container -->
+	 </div><! --/footerwrap -->
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
   <script src='{% static "assets/js/bootstrap.min.js" %}'></script>

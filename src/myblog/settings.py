@@ -1,11 +1,7 @@
 import os
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'ylfe!ogn2og%iqpq7ln0$_i+vvv^%hv#9=d@zh*62e4$b28^&s'
@@ -15,10 +11,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
-# Application definition
-
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -26,10 +18,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # third party
-    'crispy_forms',
-    'markdown_deux',
-    'pagedown',
+    'django.contrib.sites',
 
     # local apps
     'comments',
@@ -37,15 +26,46 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'authors',
+
+    # third party
+    'crispy_forms',
+    'markdown_deux',
+    'pagedown',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.linkedin',
+    'allauth.socialaccount.providers.twitter',
+
+
+
 ]
+SITE_ID = 1
+
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+ACCOUNT_AUTHENTICATION_METHOD = "username_email"
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 15
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+LOGIN_REDIRECT_URL = "/"
+
 
 MARKDOWN_DEUX_STYLES = {
-"default": {
-"extras": {
-"code-friendly": None,
-},
-"safe_mode": False,
-},
+    "default": {
+    "extras": {
+    "code-friendly": None,
+    },
+    "safe_mode": False,
+    },
 }
 
 
@@ -86,20 +106,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'myblog.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/1.9/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
-
-# Password validation
-# https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -117,75 +129,75 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 CKEDITOR_CONFIGS = {
-'default': {
-'skin': 'moono',
-#'skin': 'office2013',
-'toolbar_Basic': [
-['Source', '-', 'Bold', 'Italic']
-],
-'toolbar_YouCustomToolbarConfig': [
-{'name': 'document', 'items': ['Source', '-', 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates']},
-{'name': 'clipboard', 'items': ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo']},
-{'name': 'editing', 'items': ['Find', 'Replace', '-', 'SelectAll']},
-{'name': 'forms',
-'items': ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton',
-'HiddenField']},
-'/',
-{'name': 'basicstyles',
-'items': ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat']},
-{'name': 'paragraph', 'items': ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-',
-                                'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl','Language']},
-{'name': 'links', 'items': ['Link', 'Unlink', 'Anchor']},
-{'name': 'insert','items': ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe']},
-{'name': 'styles', 'items': ['Styles', 'Format', 'Font', 'FontSize']},
-{'name': 'colors', 'items': ['TextColor', 'BGColor']},
-{'name': 'tools', 'items': ['Maximize', 'ShowBlocks','Preview']},
-{'name': 'about', 'items': ['About']},
-#'/', # put this to force next toolbar on new line
-#{'name': 'youcustomtools',
-# 'items': [
-#            # put the name of your editor.ui.addButton here
-#            'Preview',
-#            'Maximize',
-#          ]
-#},
-],
-'toolbar': 'YouCustomToolbarConfig',
-# put selected toolbar config here
-# 'toolbarGroups': [{ 'name': 'document', 'groups': [ 'mode', 'document', 'doctools' ] }],
-# 'height': 291,
-# 'width': '100%',
-# 'filebrowserWindowHeight': 725,
-# 'filebrowserWindowWidth': 940,
-# 'toolbarCanCollapse': True,
-# 'mathJaxLib': '//cdn.mathjax.org/mathjax/2.2-latest/MathJax.js?config=TeX-AMS_HTML'
-'tabSpaces': 4,
-'extraPlugins': ','.join(
-[
-# you extra plugins here
-'div',
-'autolink',
-'autoembed',
-'embedsemantic',
-'autogrow',
-# 'devtools',
-'widget',
-'lineutils',
-'clipboard',
-'dialog',
-'dialogui',
-'elementspath'
-]),
-}
+    'default': {
+    'skin': 'moono',
+    #'skin': 'office2013',
+    'toolbar_Basic': [
+    ['Source', '-', 'Bold', 'Italic']
+    ],
+    'toolbar_YouCustomToolbarConfig': [
+    {'name': 'document', 'items': ['Source', '-', 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates']},
+    {'name': 'clipboard', 'items': ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo']},
+    {'name': 'editing', 'items': ['Find', 'Replace', '-', 'SelectAll']},
+    {'name': 'forms',
+    'items': ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton',
+    'HiddenField']},
+    '/',
+    {'name': 'basicstyles',
+    'items': ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat']},
+    {'name': 'paragraph', 'items': ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-',
+                                    'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl','Language']},
+    {'name': 'links', 'items': ['Link', 'Unlink', 'Anchor']},
+    {'name': 'insert','items': ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe']},
+    {'name': 'styles', 'items': ['Styles', 'Format', 'Font', 'FontSize']},
+    {'name': 'colors', 'items': ['TextColor', 'BGColor']},
+    {'name': 'tools', 'items': ['Maximize', 'ShowBlocks','Preview']},
+    {'name': 'about', 'items': ['About']},
+    #'/', # put this to force next toolbar on new line
+    #{'name': 'youcustomtools',
+    # 'items': [
+    #            # put the name of your editor.ui.addButton here
+    #            'Preview',
+    #            'Maximize',
+    #          ]
+    #},
+    ],
+    'toolbar': 'YouCustomToolbarConfig',
+    # put selected toolbar config here
+    # 'toolbarGroups': [{ 'name': 'document', 'groups': [ 'mode', 'document', 'doctools' ] }],
+    # 'height': 291,
+    # 'width': '100%',
+    # 'filebrowserWindowHeight': 725,
+    # 'filebrowserWindowWidth': 940,
+    # 'toolbarCanCollapse': True,
+    # 'mathJaxLib': '//cdn.mathjax.org/mathjax/2.2-latest/MathJax.js?config=TeX-AMS_HTML'
+    'tabSpaces': 4,
+    'extraPlugins': ','.join(
+    [
+    # you extra plugins here
+    'div',
+    'autolink',
+    'autoembed',
+    'embedsemantic',
+    'autogrow',
+    # 'devtools',
+    'widget',
+    'lineutils',
+    'clipboard',
+    'dialog',
+    'dialogui',
+    'elementspath'
+    ]),
+    }
 }
 # Internationalization
-# https://docs.djangoproject.com/en/1.9/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
+
 
 #Static files configuration
 STATIC_URL = '/static/'
@@ -198,19 +210,71 @@ STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static")
 MEDIA_URL = "/media/"
 #MEDIA_ROOT = os.path.join(os.path.dirname(os.path.join(BASE_DIR, "static")), "static/media")
 MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static/media")
-#Email configuration
-#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-#EMAIL_USE_TLS = True
-#EMAIL_HOST = 'smtp.gmail.com'
-#EMAIL_PORT = 587
-#EMAIL_HOST_USER = 'contact.xchangeidea@gmail.com'
-#EMAIL_HOST_PASSWORD = 'pass@word'
-#DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.mailgun.org'
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'e@mail.xchangeidea.net'
-EMAIL_HOST_PASSWORD = 'xchangeidea'
+EMAIL_HOST_USER = 'contact.xchangeidea@gmail.com'
+EMAIL_HOST_PASSWORD = 'pass@word'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+#EMAIL_USE_TLS = True
+#EMAIL_HOST = 'smtp.mailgun.org'
+#EMAIL_PORT = 587
+#EMAIL_HOST_USER = 'e@mail.xchangeidea.net'
+#EMAIL_HOST_PASSWORD = 'xchangeidea'
+#DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+SOCIALACCOUNT_PROVIDERS = \
+    { 'google':
+        { 'SCOPE': ['profile', 'email'],
+          'AUTH_PARAMS': { 'access_type': 'online' } },
+
+    'linkedin':
+      {'SCOPE': ['r_emailaddress'],
+       'PROFILE_FIELDS': ['id',
+                         'first-name',
+                         'last-name',
+                         'email-address',
+                         'picture-url',
+                         'public-profile-url']},
+
+      'facebook':
+       {'METHOD': 'oauth2',
+        'SCOPE': ['email', 'public_profile', 'user_friends'],
+        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+        'FIELDS': [
+            'id',
+            'email',
+            'name',
+            'first_name',
+            'last_name',
+            'verified',
+            'locale',
+            'timezone',
+            'link',
+            'gender',
+            'updated_time'],
+        'EXCHANGE_TOKEN': True,
+        'LOCALE_FUNC': lambda request: 'en_US',
+        'VERIFIED_EMAIL': True,
+        'VERSION': 'v2.4'},
+
+        'openid':
+        { 'SERVERS':
+            [dict(id='yahoo',
+                  name='Yahoo',
+                  openid_url='http://me.yahoo.com'),
+             dict(id='hyves',
+                  name='Hyves',
+                  openid_url='http://hyves.nl'),
+             dict(id='google',
+                  name='Google',
+                  openid_url='https://www.google.com/accounts/o8/id')]}
+
+          }
 
