@@ -6,14 +6,12 @@
 {% endblock head_extra %}
 
 {% block total_content %}
-<div class="container-fluid text-left">
-<div class='col-sm-6  col-sm-offset-3'>
-<h1>Form</h1>
-<hr/>
-<form method='POST' action='' enctype='multipart/form-data'>{% csrf_token %}
-{{ form|crispy }}
-<input type='submit' class='btn btn-default' value='Create Post' />
-</form>
-</div>
-</div>
+
+ <div class="container-fluid">
+  <div class='row'>
+  <h1>Form</h1> <hr/> {% csrf_token %}
+      {% crispy form %}
+  </div>
+ </div>
+
 {% endblock total_content %}

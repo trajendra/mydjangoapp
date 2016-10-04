@@ -10,23 +10,16 @@ from django.utils.safestring import mark_safe
 from django.utils.text import slugify
 from ckeditor_uploader.fields import RichTextUploadingField
 
-import re
 from markdown_deux import markdown
 from comments.models import Comment
 
 from .utils import get_read_time
-# Create your models here.
-# MVC MODEL VIEW CONTROLLER
-
-
-#Post.objects.all()
-#Post.objects.create(user=user, title="Some time")
+import re
 
 class PostManager(models.Manager):
     def active(self, *args, **kwargs):
         # Post.objects.all() = super(PostManager, self).all()
         return super(PostManager, self).filter(draft=False).filter(publish__lte=timezone.now())
-
 
 def upload_location(instance, filename):
     #filebase, extension = filename.split(".")
@@ -42,6 +35,34 @@ def upload_location(instance, filename):
     """
     return "%s/%s" %(new_id, filename)
 
+class Category(models.Model):
+    name = models.CharField(max_length=120)
+    is_active = models.BooleanField(default=1)
+    created_on = models.DateField(auto_now=False,auto_now_add=True)
+    def __unicode__(self):
+        return self.name
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ["-name"]
+
+class SubCategory(models.Model):
+    category = models.ForeignKey(Category)
+    name = models.CharField(max_length=120)
+    is_active = models.BooleanField(default=1)
+    created_on = models.DateField(auto_now=False, auto_now_add=True)
+    def __unicode__(self):
+        return self.name
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ["-name"]
+
+
 class Post(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
     title = models.CharField(max_length=120)
@@ -51,21 +72,24 @@ class Post(models.Model):
             blank=True,
             width_field="width_field",
             height_field="height_field")
-    height_field = models.IntegerField(default=0)
-    width_field = models.IntegerField(default=0)
-    #content = models.TextField()
+    height_field = models.IntegerField(default=0,null=True,blank=True)
+    width_field = models.IntegerField(default=0,null=True,blank=True)
+    summary_content = RichTextUploadingField(config_name='awesome_ckeditor')
     content = RichTextUploadingField()
     draft = models.BooleanField(default=False)
     publish = models.DateField(auto_now=False, auto_now_add=False)
     read_time =  models.IntegerField(default=0) # models.TimeField(null=True, blank=True) #assume minutes
     updated = models.DateTimeField(auto_now=True, auto_now_add=False)
     timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
+    category = models.ForeignKey(Category,default=1)
+    subcategory = models.ForeignKey(SubCategory,default=1)
     tags = models.CharField(max_length=200)
     likes = models.PositiveIntegerField(default=0)
+    views = models.PositiveIntegerField(default=0)
     objects = PostManager()
 
     def get_tag_list(self):
-        return re.split(" ", self.tags)
+        return re.split(",", self.tags.replace(" ",""))
 
     @property
     def total_likes(self):

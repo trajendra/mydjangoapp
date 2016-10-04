@@ -14,9 +14,12 @@
     {% if request.user.is_authenticated %}
     {% if request.user.is_staff %}
     <div style="float:right; padding:5px 5px 5px 5px;">
-     <a href='/blog/create' class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-plus"></span> Create Post</a>
-     <a href='{{instance.get_absolute_url}}edit' class="btn btn-info btn-sm" ><span class="glyphicon glyphicon-edit"></span> Update Post</a>
-     <a href='{{instance.get_absolute_url}}delete' class="btn btn-danger btn-sm" ><span class="glyphicon glyphicon-remove"></span> Delete Post</a>
+     <a href='/blog/create' class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-plus"></span> New </a>
+     {% if request.user == instance.user %}
+     <a href='{{instance.get_absolute_url}}edit' class="btn btn-info btn-sm" ><span class="glyphicon glyphicon-edit"></span> Update </a>
+     {% endif %}
+     <a href='{{instance.get_absolute_url}}delete' class="btn btn-danger btn-sm" id="confirm" ><span class="glyphicon glyphicon-remove"></span> Delete </a>
+
     </div>
     {% endif %}
     {% endif %}
@@ -33,47 +36,9 @@
     <p>Read time: {% if instance.read_time <= 1 %} < 1 Minute {% else %}{{ instance.read_time }} minutes {% endif %}</p>
     <p>{{ instance.get_markdown }}</p>
 
-   <div class="spacing"></div>
-  <div class="col-sm-12">
-    <div class="col-sm-6" >
-        <p class='share'>
-         <span> Like:  </span>
-           <button class="likes post-likes" id="heart-icon" data-post-id="{{ instance.id }}" style="border:none;font-size: 25px;background-color: #fff;">
-           {% if liked %}
-           <i class="heart-shaped fa fa-heart" style="display: inline-flex; border-color:white;  color:hotpink; background-color:none ">
-           <span class="like_count_blog" id="heart-counter" style="font-size:20px; font-weight:bold; padding-left: 3px; "> {% if instance.likes %}{{ instance.likes }} {% endif %}</span>
-           </i>
-           {% else %}
-           <i class="heart-shaped fa fa-heart" style="display: inline-flex; border-color:white;  color:deeppink; background-color:white">
-           <span class="like_count_blog" id="heart-counter" style="font-size:15px; font-weight:bold; padding-left: 3px; ">{% if instance.likes %}{{ instance.likes }} {% endif %}</span>
-           </i>
-           {% endif %}
+    {% include "share_social.html" %}
 
-           </button>
 
-       </p>
-      </div>
-    <div class="col-sm-6" style="text-align:right;">
-       <p class='share'>
-           <span>Share: </span>
-           <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}">
-           <img src="{% static "images/facebook.png" %}" alt="Fb" width=30 height=30 class="right" />
-           </a>
-
-           <a href="https://twitter.com/home?status={{ instance.content|truncatechars:80|urlify }}%20{{ request.build_absolute_uri }}">
-            <img src="{% static "images/twitter.png" %}" alt="Twitter" width=30 height=30 class="right" />
-           </a>
-
-           <a href='https://plus.google.com/share?url={{ request.build_absolute_uri }}'>
-              <img src="{% static "images/googleplus.png" %}" alt="googleplus" width=30 height=30 class="right" />
-           </a>
-
-           <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}&title={{ instance.title }}&summary={{ share_string }}&source={{ request.build_absolute_uri }}">
-            <img src="{% static "images/linkedin.png" %}" alt="linkedin" width=30 height=30 class="right" />
-           </a>
-       </p>
-    </div>
-  </div>
    <div >
         <p class='lead'>Comments</p>
         {% if request.user.is_authenticated %}

@@ -25,12 +25,13 @@ INSTALLED_APPS = [
     'posts',
     'ckeditor',
     'ckeditor_uploader',
-    'authors',
+    'profiles',
 
     # third party
     'crispy_forms',
     'markdown_deux',
     'pagedown',
+
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -38,8 +39,6 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.linkedin',
     'allauth.socialaccount.providers.twitter',
-
-
 
 ]
 SITE_ID = 1
@@ -110,8 +109,27 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+
+        #'ENGINE': 'sql_server.pyodbc',
+        #'NAME': 'SQLAzureDB',
+        #'USER': 'trajendra@myserver',
+        #'PASSWORD': '04june@1985',
+        #'HOST': 'sqldbazure.database.windows.net',
+        #'PORT': '',
+
+        #'OPTIONS': {
+        #    'driver': 'ODBC Driver 13 for SQL Server',
+        #},
+        #'NAME': 'my_database',
+        #'ENGINE': 'sqlserver_ado',
+        #'HOST': 'dbserver\\ss2008',
+        #'USER': '',
+        #'PASSWORD': '',
     }
 }
+
+# set this to False if you want to turn off pyodbc's connection pooling
+#DATABASE_CONNECTION_POOLING = False
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -129,66 +147,72 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 CKEDITOR_CONFIGS = {
+
+    'awesome_ckeditor': {'toolbar':'Full',
+        'height': 100,
+        'width': '100%',
+        'toolbarCanCollapse': True,
+
+                         },
+
     'default': {
-    'skin': 'moono',
-    #'skin': 'office2013',
-    'toolbar_Basic': [
-    ['Source', '-', 'Bold', 'Italic']
-    ],
-    'toolbar_YouCustomToolbarConfig': [
-    {'name': 'document', 'items': ['Source', '-', 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates']},
-    {'name': 'clipboard', 'items': ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo']},
-    {'name': 'editing', 'items': ['Find', 'Replace', '-', 'SelectAll']},
-    {'name': 'forms',
-    'items': ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton',
-    'HiddenField']},
-    '/',
-    {'name': 'basicstyles',
-    'items': ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat']},
-    {'name': 'paragraph', 'items': ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-',
-                                    'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl','Language']},
-    {'name': 'links', 'items': ['Link', 'Unlink', 'Anchor']},
-    {'name': 'insert','items': ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe']},
-    {'name': 'styles', 'items': ['Styles', 'Format', 'Font', 'FontSize']},
-    {'name': 'colors', 'items': ['TextColor', 'BGColor']},
-    {'name': 'tools', 'items': ['Maximize', 'ShowBlocks','Preview']},
-    {'name': 'about', 'items': ['About']},
-    #'/', # put this to force next toolbar on new line
-    #{'name': 'youcustomtools',
-    # 'items': [
-    #            # put the name of your editor.ui.addButton here
-    #            'Preview',
-    #            'Maximize',
-    #          ]
-    #},
-    ],
-    'toolbar': 'YouCustomToolbarConfig',
-    # put selected toolbar config here
-    # 'toolbarGroups': [{ 'name': 'document', 'groups': [ 'mode', 'document', 'doctools' ] }],
-    # 'height': 291,
-    # 'width': '100%',
-    # 'filebrowserWindowHeight': 725,
-    # 'filebrowserWindowWidth': 940,
-    # 'toolbarCanCollapse': True,
-    # 'mathJaxLib': '//cdn.mathjax.org/mathjax/2.2-latest/MathJax.js?config=TeX-AMS_HTML'
-    'tabSpaces': 4,
-    'extraPlugins': ','.join(
-    [
-    # you extra plugins here
-    'div',
-    'autolink',
-    'autoembed',
-    'embedsemantic',
-    'autogrow',
-    # 'devtools',
-    'widget',
-    'lineutils',
-    'clipboard',
-    'dialog',
-    'dialogui',
-    'elementspath'
-    ]),
-    }
+        'skin': 'moono',
+
+        'toolbar_Basic': [
+            ['Source', '-', 'Bold', 'Italic']
+         ],
+
+        'toolbar_YouCustomToolbarConfig': [
+            {'name': 'document', 'items': ['Source' , '-', 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates']},
+            #{'name': 'clipboard', 'items': ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo']},
+
+            #{'name': 'editing', 'items': ['Find', 'Replace', '-', 'SelectAll']},
+            #{'name': 'forms','items': ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton','HiddenField']},
+            #'/',
+
+            {'name': 'insert','items': ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe']},
+            {'name': 'styles', 'items': ['Styles', 'Format', 'Font', 'FontSize']},
+            {'name': 'colors', 'items': ['TextColor', 'BGColor']},
+            {'name': 'basicstyles', 'items': ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat']},
+            {'name': 'paragraph', 'items': ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-',
+                                            'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl','Language']},
+            {'name': 'tools', 'items': ['Maximize', 'ShowBlocks', 'Preview']},
+            {'name': 'links', 'items': ['Link', 'Unlink', 'Anchor']},
+
+            #{'name': 'about', 'items': ['About']},
+         ],
+
+        'toolbar': 'YouCustomToolbarConfig',
+
+         #put selected toolbar config here
+         'toolbarGroups': [{ 'name': 'document', 'groups': [ 'mode', 'document', 'doctools' ] }],
+
+         'height': 100,
+         'width': '100%',
+         'filebrowserWindowHeight': 725,
+         'filebrowserWindowWidth': 940,
+         'toolbarCanCollapse': True,
+         #'mathJaxLib': '//cdn.mathjax.org/mathjax/2.2-latest/MathJax.js?config=TeX-AMS_HTML'
+         'tabSpaces': 4,
+
+        #'extraPlugins': ','.join(
+        #[
+        # you extra plugins here
+        #'div',
+        #'autolink',
+        #'autoembed',
+        #'embedsemantic',
+        #'autogrow',
+        # 'devtools',
+        #'widget',
+        #'lineutils',
+        #'clipboard',
+        #'dialog',
+        #'dialogui',
+        #'elementspath'
+        #]),
+
+        }
 }
 # Internationalization
 
@@ -211,15 +235,20 @@ MEDIA_URL = "/media/"
 #MEDIA_ROOT = os.path.join(os.path.dirname(os.path.join(BASE_DIR, "static")), "static/media")
 MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static/media")
 
-
-
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = 'smtp.xchangeidea.net'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'contact.xchangeidea@gmail.com'
-EMAIL_HOST_PASSWORD = 'pass@word'
+EMAIL_HOST_USER = 'admin@xchangeidea.net'
+EMAIL_HOST_PASSWORD = 'xch@ngeide@2016'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+#EMAIL_USE_TLS = True
+#EMAIL_HOST = 'smtp.gmail.com'
+#EMAIL_#PORT = 587
+#EMAIL_HOST_USER = 'contact.xchangeidea@gmail.com'
+#EMAIL_HOST_PASSWORD = 'pass@word'
+#DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 #EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 #EMAIL_USE_TLS = True

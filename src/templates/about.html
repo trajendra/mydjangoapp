@@ -21,9 +21,18 @@
 	</head>
 	<body>
     <div class="navbar navbar-default navbar-fixed-top navbar-shrink" role="navigation" >
-    <a class="navbar-brand" href="/" style="color:white; padding-left:45px; "> XCHANGE IDEA . NET </a>
+    <a class="navbar-brand" href="/" style="color:white; padding-left:25px; padding-right:33px; "> XCHANGE IDEA . NET </a>
     <div class="container">
+    <div class="col-lg-6" style="padding-top: 6px;">
+     <form method='GET' action='' class='row'>
+         <div class='input-group'><span class='input-group-btn'>
+             <button class='btn btn-default' type='submit'> <i class="fa fa-search"></i></button>
+          </span>
+          <input class='form-control' type='text' name='q' placeholder='Search posts' value='{{ request.GET.q }}'/>
 
+         </div>
+      </form>
+     </div>
       <div class="navbar-header" >
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
           <span class="sr-only">Toggle navigation</span>
@@ -33,18 +42,27 @@
         </button>
 
       </div>
+
       <div class="navbar-collapse collapse navbar-right" >
         <ul class="nav navbar-nav" >
           <li class="active"><a href='{% url "posts:list" %}'>HOME</a></li>
           {% block post_detail_link %}
           {% endblock %}
           <li><a href="/about">ABOUT US</a></li>
-          <li><a href={% url "contact" %}>CONTACT</a></li>
+          <li><a href="/contact">CONTACT</a></li>
           {% if request.user.is_authenticated %}
-          {% if user.is_staff %}
-          <li><a href='/blog/create/'><span class="glyphicon glyphicon-pencil"></span> CREATE POST</a></li>
+          <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">ACTIONS <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+               {% if user.is_staff %}
+                <li><a href='/blog/create/'><span class="glyphicon glyphicon-pencil"></span> CREATE POST</a></li>
+               {% endif %}
+               <li><a href="/profile/"><span class="glyphicon glyphicon-user"></span> MY PROFILE</a></li>
+
+              </ul>
+            </li>
           {% endif %}
-          {% endif %}
+
         </ul>
 
         <ul class="nav navbar-nav navbar-right">
@@ -65,7 +83,7 @@
 	  <section class="grid-wrap">
         <ul class="grid">
 		<li class="grid-sizer"></li><!-- for Masonry column width -->
-         {% if not request.user.is_authenticated %}
+
          {% for profile in profiles %}
 
          <li><figure>
@@ -73,6 +91,7 @@
 		 <figcaption>
          <h3>{% if profile.first_name %} {{ profile.first_name }} {% endif %}
              {% if profile.last_name %} {{ profile.last_name }}   {% endif %}
+
          </h3>
          <p>{% if profile.skills %} {{ profile.skills }}{% endif %}</p>
          </figcaption>
@@ -80,12 +99,12 @@
 
         {% endfor %}
 
-        {% endif %}
+
 		</ul>
 	  </section><!-- // grid-wrap -->
 	  <section class="slideshow">
 	  <ul>
-      {% if not request.user.is_authenticated %}
+
       {% for profile in profiles %}
 
        <li><figure>
@@ -96,11 +115,13 @@
              {% if profile.last_name %} {{ profile.last_name }}   {% endif %}
          </h3>
          <p>{% if profile.skills %} {{ profile.skills }}{% endif %}</p>
-         <a href="{{ profile.get_absolute_url }}" style="color:#ff922c;"> [More Details..] </a>
+
+         <a href="/blog/posts/{{instance.slug}}" style="color:#ff922c;"> [ View his Posts ] </a><br/>
+         <a href="{{ profile.get_absolute_url }}" style="color:#ff922c;"> [ Full Profile ] </a><br/>
          </figcaption>
 		</figure></li>
       {% endfor %}
-      {% endif %}
+
        </ul>
 		<nav>
 		<span class="icon nav-prev"></span>
@@ -111,35 +132,6 @@
 	  </section><!-- // slideshow -->
 	 </div><!-- // grid-gallery -->
 
-    <div id="grid-gallery" class="grid-gallery"  >
-	  <section class="grid-wrap">
-        <ul class="grid">
-		<li class="grid-sizer" ></li><!-- for Masonry column width -->
-         {% if request.user.is_authenticated %}
-             {% if request.user.is_staff %}
-         {% for profile in profiles %}
-               {% if profile.user == request.user %}
-         <li>
-             <figure>
-             <a href='{{profile.get_absolute_url}}update' class="btn btn-info btn-sm" >
-             <span class="glyphicon glyphicon-edit"></span> Update Profile</a>
-             {% if profile.image %}<img src='{{ profile.image.url }}' alt="img"/> {% endif %}
-             <figcaption>
-             <h3>{% if profile.first_name %} {{ profile.first_name }} {% endif %}
-                 {% if profile.last_name %} {{ profile.last_name }}   {% endif %}
-             </h3>
-                 <p>{% if profile.skills %} {{ profile.skills }}{% endif %}</p>
-             </figcaption>
-            </figure>
-         </li>
-        {% endif %}
-        {% endfor %}
-         {% endif %}
-        {% endif %}
-		</ul>
-	  </section><!-- // grid-wrap -->
-
-	 </div><!-- // grid-gallery -->
 
 	</div>
 		<script src='{% static "GridGallery/GridGallery/js/imagesloaded.pkgd.min.js" %}'></script>

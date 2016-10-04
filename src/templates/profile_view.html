@@ -14,12 +14,22 @@
  </div>
 
 <div class="container mtb" style="padding-left: 100px; padding-right: 100px;">
-  <div class="row">
-  {% if request.user.is_authenticated %}{% if request.user.is_staff %}
+  <div class="row"> {% if request.user.is_authenticated %}{% if request.user == instance.user %}
    <a href='{{instance.get_absolute_url}}update' class="btn btn-info btn-sm" >
-       <span class="glyphicon glyphicon-edit"></span> Update Profile</a>  {% endif %} {% endif %}
-   <p>  <a href=""><h2>{% if instance.first_name %} {{ instance.first_name }} {% endif %}
-      {% if instance.last_name %} {{ instance.last_name }}   {% endif %}</h2></a></p><p>
+       <span class="glyphicon glyphicon-edit"></span> Update Profile</a> {% endif %} {% endif %}
+
+
+
+     <a href=""><h2>{% if instance.first_name %} {{ instance.first_name }} {% endif %}
+      {% if instance.last_name %} {{ instance.last_name }}   {% endif %}</h2></a>
+
+
+    <p>   Skills :  {{ instance.skills }} </br>
+       Interests : {{ instance.learn_interests }}
+
+
+   </p><a href="/blog/posts/{{instance.slug}}" style="color:#ff922c;"> [ View his Posts ] </a>
+      <p>
       {% if instance.profile %} {{ instance.profile|safe }}{% endif %}
     </p>
   </div>
