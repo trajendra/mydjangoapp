@@ -4,7 +4,7 @@
 {% block content %}
 
 
-    <div class="col-lg-9">
+    <div class="col-lg-9" style="word-wrap: break-word;">
     {% for post in object_list %}
       {% if post.image %} <p> <img src='{{ post.image.url }}' class='img-responsive'> </p> {% endif %}
        <a href="{{post.get_absolute_url}}" > <h3 class="ctitle">{{ post.title }}</h3> </a>
