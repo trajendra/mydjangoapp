@@ -23,7 +23,7 @@ Syntax highlighted code block
 
 **Bold** and _Italic_ and `Code` text
 
-[Link](url) and ![Image]("https://res.cloudinary.com/trajendra/image/upload/c_fit,h_800,w_800/v1482844250/fjmfsuzb8dk5gf8achry.jpg")
+[Link](url) and ![Image](https://res.cloudinary.com/trajendra/image/upload/c_fit,h_800,w_800/v1482844250/fjmfsuzb8dk5gf8achry.jpg)
 ```
 
 For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
