@@ -76,7 +76,7 @@ def create_skill_data(profiles):
                 count[skill] = 1
             else:
                 count[skill] += 1
-    for skill, count in sorted(count.iteritems(), key=lambda (k, v): (v, k), reverse=True):
+    for skill, count in sorted(count.items(), key=lambda kv: (-kv[1], kv[0]), reverse=True):
         skill_data.append({'skill': skill,
                          'count': count,})
     return skill_data

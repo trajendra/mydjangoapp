@@ -1,8 +1,8 @@
 from django import forms
 #from pagedown.widgets import PagedownWidget
-from .models import Post
+from posts.models import Post
 from django import forms
-import models
+import posts.models
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, Submit, HTML, Button, Row, Field
@@ -10,8 +10,8 @@ from crispy_forms.bootstrap import AppendedText, PrependedText, FormActions
 
 class PostForm(forms.ModelForm):
     publish = forms.DateField(widget=forms.SelectDateWidget)
-    category = forms.ModelChoiceField(queryset = models.Category.objects.all())
-    subcategory = forms.ModelChoiceField(queryset = models.SubCategory.objects.all())
+    category = forms.ModelChoiceField(queryset = posts.models.Category.objects.all())
+    subcategory = forms.ModelChoiceField(queryset = posts.models.SubCategory.objects.all())
 
     class Meta:
         model = Post

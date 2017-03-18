@@ -13,7 +13,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from forms import MessageForm
+from .forms import MessageForm
 from datetime import datetime
 
 from django.db.models import Q
@@ -30,7 +30,7 @@ from profiles.models import Profile
 from comments.forms import CommentForm
 from comments.models import Comment
 
-import models
+import posts.models
 import json as simplejson
 import re
 
@@ -247,11 +247,11 @@ def create_archive_data(posts):
             mcount[year][month] = 1
         else:
             mcount[year][month] += 1
-    for year in sorted(count.iterkeys(), reverse=True):
+    for year in sorted(count.keys(), reverse=True):
         archive_data.append({'isyear': True,
                              'year': year,
                              'count': count[year],})
-        for month in sorted(mcount[year].iterkeys(), reverse=True):
+        for month in sorted(mcount[year].keys(), reverse=True):
             archive_data.append({'isyear': False,
                                  'yearmonth': '%d/%02d' % (year, month),
                                  'monthname': MONTH_NAMES[month],
@@ -270,7 +270,7 @@ def create_tag_data(posts):
                 count[tag] = 1
             else:
                 count[tag] += 1
-    for tag, count in sorted(count.iteritems(), key=lambda (k, v): (v, k), reverse=True):
+    for tag, count in sorted(count.items(), key=lambda kv: (-kv[1], kv[0]), reverse=True):
         tag_data.append({'tag': tag,
                          'count': count,})
     return tag_data
@@ -291,9 +291,9 @@ def create_ctg_data(posts):
             sccount[ctg][subctg] = 1
         else:
             sccount[ctg][subctg] += 1
-    for ctg in (ccount.iterkeys()):
+    for ctg in (ccount.keys()):
         ctg_data.append({ 'ctg': ctg,'ccount': ccount[ctg],'isctg': True,})
-        for subctg in (sccount[ctg].iterkeys()):
+        for subctg in (sccount[ctg].keys()):
             ctg_data.append({'ctg': ctg,'subctg':subctg,
                                  'ctgsc': '%s/%s' % (ctg, subctg),
                                  'sccount': sccount[ctg][subctg],'isctg': False,})
