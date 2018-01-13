@@ -8,7 +8,7 @@ SECRET_KEY = 'ylfe!ogn2og%iqpq7ln0$_i+vvv^%hv#9=d@zh*62e4$b28^&s'
 
 #SECRET_KEY = config('SECRET_KEY')
 
-DEBUG = config('DEBUG', default=False, cast=bool)
+#DEBUG = config('DEBUG', default=False, cast=bool)
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
