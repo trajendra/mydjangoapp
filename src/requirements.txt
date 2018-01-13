@@ -10,6 +10,7 @@ django-pagedown==0.1.1
 markdown2==2.3.3
 oauthlib==2.0.1
 olefile==0.44
+psycopg2==2.5.3
 python-42==0.1.2
 python-dateutil==1.5
 python-decouple==3.1
